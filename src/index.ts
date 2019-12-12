@@ -3,6 +3,7 @@ import BabelLoader from './loaders/babel-wxparcel-loader'
 import EnvifyLoader from './loaders/envify-wxparcel-loader'
 import SassLoader from './loaders/sass-wxparcel-loader'
 import UglifyJSLoader from './loaders/uglifyjs-wxparcel-loader'
+import ImageminLoader from './loaders/imagemin-wxparcel-loader'
 
 // Plugins
 import CleanPlugin from './plugins/clean-wxparcel-plugin'
@@ -53,6 +54,7 @@ export {
   EnvifyLoader,
   SassLoader,
   UglifyJSLoader,
+  ImageminLoader,
 
   /**
    * plugins

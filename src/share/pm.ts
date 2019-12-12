@@ -45,7 +45,6 @@ export const installDependencies = async (modules: string[] | string, execPath: 
   }
 
   let linkedModules = await fetchNpmLinks(execPath)
-
   try {
     log(`Try install ${modules.join(', ')}, please wait...`)
     await pipeSpawn(packageManager, args, { stdio: 'inherit' })
@@ -53,7 +52,7 @@ export const installDependencies = async (modules: string[] | string, execPath: 
     log(`Install ${modules.join(', ')} completed`)
     installedModules.splice(installedModules.length, 0, ...modules)
 
-    let promises = linkedModules.map(({ file, real }) => fs.symlink(real, file))
+    let promises = linkedModules.map(({ file, real }) => !fs.existsSync(file) ? fs.symlink(real, file) : Promise.resolve())
     await Promise.all(promises)
 
   } catch (error) {
