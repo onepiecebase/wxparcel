@@ -1,14 +1,17 @@
 import { Options as ImageminOptions } from 'imagemin'
-import { Options as JpegtranOptions } from 'imagemin-jpegtran'
-import { Options as PngquantOptions } from 'imagemin-pngquant'
+import { Options as JpegOptions } from 'imagemin-jpegtran'
+import Pngquant from 'imagemin-pngquant'
 import { localRequire } from '../share/module'
 import * as Typings from '../typings'
 
+type Nth<T extends any[], S extends number> = T[S]
+type PngOptions = Nth<Parameters<typeof Pngquant>, 0>
+
 interface ImageMinOptions extends Typings.ParcelLoaderOptions {
   options: {
-    jepg: JpegtranOptions,
-    png: PngquantOptions,
-    options: ImageminOptions
+    jepg?: JpegOptions,
+    png?: PngOptions,
+    options?: ImageminOptions
   }
 }
 
@@ -19,10 +22,10 @@ interface ImageMinOptions extends Typings.ParcelLoaderOptions {
  */
 const ImageMinLoader: Typings.ParcelLoader = async (asset, options: ImageMinOptions) => {
   const { content } = asset
-  const { options: loaderOptions } = options || {}
+  const { options: loaderOptions, rootDir } = options
 
-  const promises = ['imagemin', 'imagemin-jpegtran', 'imagemin-pngquant'].map((dep) => localRequire(dep))
-  const [imagemin, imageminJpegtran, imageminPngquant] = await Promise.all(promises).then((plugins) => plugins.map((plugin) => plugin.default || plugin))
+  const modules = await localRequire(['imagemin', 'imagemin-jpegtran', 'imagemin-pngquant'], rootDir, true)
+  const [imagemin, imageminJpegtran, imageminPngquant] = modules.map((module) => module.default || module)
 
   const plugins = loaderOptions.options && Array.isArray(loaderOptions.options.plugins) ? [].concat(loaderOptions.options.plugins) : []
   loaderOptions.jepg && plugins.unshift(imageminJpegtran(loaderOptions.jepg))

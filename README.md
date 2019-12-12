@@ -62,9 +62,13 @@ $ wxparcel-script start --publicPath 'https://github.com' --config production
 
 ```
 $ cd path/to/wxparcel-script
+$ yarn link # 这样就可以全局通用, 若要使用全局作用于项目, 必须把本地项目的依赖删除 (建议使用)
+$ # 或
 $ npm link . # 这样就可以全局通用, 若要使用全局作用于项目, 必须把本地项目的依赖删除
 
 # 若要引用到 wxparcel-script 中配置文件或内部类
 $ cd path/to/project
+$ yarn link wxparcel-script # 必须在 `yarn link` 之后执行 (建议使用)
+$ # 或
 $ npm link wxparcel-script # 必须在 `npm link .` 之后执行
 ```
