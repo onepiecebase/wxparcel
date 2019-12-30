@@ -61,6 +61,16 @@ export default class JSResolver extends Resolver {
   public convertFinallyState (source: string, { code, dependency, destination, required, ...props }) {
     let extname = path.extname(destination)
     if (extname === '' || /\.(jsx?|babel|es6)/.test(extname)) {
+      /**
+       * 自身带 @ 符号的依赖
+       */
+      if (required.charAt(0) === '@') {
+        const parent = this.convertDestination(props.file)
+        const parentDir = path.dirname(parent)
+        const url = path.relative(parentDir, destination)
+        source = source.replace(new RegExp(escapeRegExp(code), 'ig'), `require("${url}")`)
+      }
+
       let dependence = { dependency, destination, required, ...props }
       return [source, dependence]
     }
