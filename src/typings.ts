@@ -9,6 +9,7 @@ import * as Types from './constants/chunk-type'
 export interface ParcelCliOptions {
   config?: string
   watch?: boolean
+  stats?: boolean
   publicPath?: string
   sourceMap?: boolean | string
   env?: string
