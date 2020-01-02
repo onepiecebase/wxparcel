@@ -67,7 +67,13 @@ export default class JSResolver extends Resolver {
       if (required.charAt(0) === '@') {
         const parent = this.convertDestination(props.file)
         const parentDir = path.dirname(parent)
-        const url = path.relative(parentDir, destination)
+        let url = path.relative(parentDir, destination)
+        url = url.replace(new RegExp(escapeRegExp(path.sep), 'g'), '/')
+
+        if (/^[a-zA-Z]/.test(url.charAt(0))) {
+          url = './' + url
+        }
+
         source = source.replace(new RegExp(escapeRegExp(code), 'ig'), `require("${url}")`)
       }
 

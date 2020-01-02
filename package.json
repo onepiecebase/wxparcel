@@ -47,8 +47,8 @@
     "coverage": "rimraf ./coverage && nyc --require ts-node/register --reporter=text --reporter=lcov --report-dir=./coverage npm run mocha",
     "coveralls": "npm run coverage && node ./node_modules/coveralls/bin/coveralls.js < ./coverage/lcov.info",
     "test": "npm run lint && npm run mocha",
-    "develop": "rimraf ./libs && concurrently \"tsc --project ./src --outDir ./libs --declaration --watch\" \"cpx 'src/**/{*.handlebars,.babelrc}' ./libs --watch --verbose\"",
-    "release": "rimraf ./libs && cpx 'src/**/{*.handlebars,.babelrc}' ./libs --verbose && tsc --project ./src --outDir ./libs --declaration",
+    "develop": "rimraf ./libs && cpx src/**/*{.handlebars,.babelrc} ./libs --verbose && concurrently \"tsc --project ./src --outDir ./libs --declaration --watch\" \"cpx 'src/**/{*.handlebars,.babelrc}' ./libs --watch --verbose\"",
+    "release": "rimraf ./libs && cpx src/**/*{.handlebars,.babelrc} ./libs --verbose && tsc --project ./src --outDir ./libs --declaration",
     "start": "npm run develop"
   },
   "dependencies": {
