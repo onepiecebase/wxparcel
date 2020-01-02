@@ -59,22 +59,26 @@ export default class JSResolver extends Resolver {
    * @returns [source, dependence] 其中 dependence 不包含 code 属性
    */
   public convertFinallyState (source: string, { code, dependency, destination, required, ...props }) {
-    let extname = path.extname(destination)
+    const extname = path.extname(destination)
     if (extname === '' || /\.(jsx?|babel|es6)/.test(extname)) {
       /**
-       * 自身带 @ 符号的依赖
+       * 处理 NPM 依赖
+       * 因为 NPM 统一放在 `options.npmDir`
+       * 目录中, 因此依赖需要额外做不同的操作
        */
-      if (required.charAt(0) === '@') {
-        const parent = this.convertDestination(props.file)
-        const parentDir = path.dirname(parent)
-        let url = path.relative(parentDir, destination)
-        url = url.replace(new RegExp(escapeRegExp(path.sep), 'g'), '/')
+      if (/node_modules/.test(dependency)) {
+        const { file } = props
+        const employer = this.convertDestination(file)
+        const employerDir = path.dirname(employer)
 
-        if (/^[a-zA-Z]/.test(url.charAt(0))) {
-          url = './' + url
+        let relative = path.relative(employerDir, destination)
+        relative = relative.replace(new RegExp(escapeRegExp(path.sep), 'g'), '/')
+        if (relative.charAt(0) !== '.') {
+          relative = './' + relative
         }
 
-        source = source.replace(new RegExp(escapeRegExp(code), 'ig'), `require("${url}")`)
+        const relativeRequire = relative.replace(extname, '')
+        source = source.replace(new RegExp(escapeRegExp(code), 'ig'), `require("${relativeRequire}")`)
       }
 
       let dependence = { dependency, destination, required, ...props }
