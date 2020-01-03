@@ -139,6 +139,10 @@ export default class Resolver {
 
   /**
    * 转换 @ 标识的 require 路径
+   * @description
+   * 注意这里不包含 npm scope 的情况,
+   * 例如 `@babel`, 因此处理特殊情况,
+   * 不能使用该方法
    * @param required 模块路径
    * @returns 转换后的模块路径
    */

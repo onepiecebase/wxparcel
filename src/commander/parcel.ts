@@ -13,7 +13,7 @@ import babelRequire from '../vendors/babel-register'
 
 // 执行编译流程
 const run = async (options: Typings.ParcelCliOptions = {}) => {
-  let { config: configFile } = options
+  let { config: configFile, stats: displayStats } = options
   if (!configFile) {
     throw new TypeError('Config file is not provided')
   }
@@ -57,7 +57,7 @@ const run = async (options: Typings.ParcelCliOptions = {}) => {
 
   let parcel = new Parcel(GlobalOptionManager)
   let stats = await parcel.run()
-  printStats(stats)
+  displayStats && printStats(stats)
 
   /**
    * 是否监听文件
@@ -68,7 +68,7 @@ const run = async (options: Typings.ParcelCliOptions = {}) => {
     let options = {
       change: (file, hasBeenEffect) => GlobalLogger.trace(`\nFile ${chalk.bold(file)} has been changed, ${hasBeenEffect ? 'compile' : 'but it\'s not be required, ignore'}...\n`),
       unlink: (file) => GlobalLogger.trace(`\nFile ${chalk.bold(file)} has been deleted, but it will be only delete from cache.\n`),
-      complete: (stats) => printStats(stats)
+      complete: (stats) => displayStats && printStats(stats)
     }
 
     parcel.watch(options)
@@ -114,6 +114,10 @@ const startAction = async (options: Typings.ParcelCliOptions = {}) => {
 
     if (!fs.existsSync(config)) {
       throw new Error(`Config file is not found, please ensure config file exists. ${config}`)
+    }
+
+    if (typeof options.stats !== 'boolean') {
+      options.stats = false
     }
 
     options.config = config
