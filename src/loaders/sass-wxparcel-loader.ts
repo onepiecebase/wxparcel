@@ -1,5 +1,5 @@
 import { localRequire } from '../share/module'
-import { Options as NodeSassOptions } from 'node-sass'
+import { Options as NodeSassOptions, SassError, Result as SassResult } from 'node-sass'
 import * as Typings from '../typings'
 
 interface SassOptions extends Typings.ParcelLoaderOptions {
@@ -28,14 +28,14 @@ export const SassLoader: Typings.ParcelLoader = async (asset, options: SassOptio
       sourceMap: true
     }
 
-    render(Object.assign({}, defaultOptions, sassOptions, params), (error, result) => {
+    render(Object.assign({}, defaultOptions, sassOptions, params), (error: SassError, result: SassResult) => {
       if (error) {
         reject(error)
         return
       }
 
-      let { css: code, map, stats } = result
-      let dependencies = stats.includedFiles || []
+      const { css: code, map, stats } = result
+      const dependencies = stats.includedFiles || []
       resolve({ code, map, dependencies })
     })
   })

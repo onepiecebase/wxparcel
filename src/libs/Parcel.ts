@@ -104,12 +104,12 @@ export default class Parcel {
     const { appConfigFile, bundle: useBundle } = this.options
 
     // 判断是否为被忽略文件
-    const ignoreFile = (file) => {
+    const ignoreFile = (file: string): boolean => {
       return IgnoreFiles.findIndex((pattern) => minimatch(file, pattern)) !== -1
     }
 
     // 编译并输出文件
-    const transform = async (files) => {
+    const transform = async (files: string | string[]): Promise<Chunk[]> => {
       files = Array.isArray(files) ? files : [files]
 
       let chunks = await GlobalParser.multiCompile(files)
@@ -154,7 +154,7 @@ export default class Parcel {
     }
 
     // 开始执行
-    const start = async (file, involvedFiles = []) => {
+    const start = async (file: string, involvedFiles: string[] = []): Promise<void> => {
       try {
         let startTime = Date.now()
         this.running = true
@@ -186,7 +186,7 @@ export default class Parcel {
     }
 
     // 处理文件改变事件
-    const handleFileChanged = (file) => {
+    const handleFileChanged = (file: string): void => {
       /**
        * 判断变更的文件是否被忽略,
        * 若被忽略则直接退出
@@ -205,6 +205,7 @@ export default class Parcel {
         start(file).catch(() => {
           // nothing todo...
         })
+
         return
       }
 
@@ -217,6 +218,7 @@ export default class Parcel {
         start(file).catch(() => {
           // nothing todo...
         })
+
         return
       }
 
@@ -230,6 +232,7 @@ export default class Parcel {
         start(file, involvedFiles).catch(() => {
           // nothing todo...
         })
+
         return
       }
 
@@ -237,7 +240,7 @@ export default class Parcel {
     }
 
     // 处理删除文件事件
-    const handleFileUnlink = (file) => {
+    const handleFileUnlink = (file: string): void => {
       /**
        * 判断变更的文件是否被忽略,
        * 若被忽略则直接退出

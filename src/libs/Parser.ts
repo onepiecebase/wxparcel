@@ -36,23 +36,21 @@ export default class Parser {
    * 编译多个文件
    * @param files 需要编译的文件
    */
-  public multiCompile (files: string[]): Promise<Chunk[]> {
+  public async multiCompile (files: string[]): Promise<Chunk[]> {
     if (!Array.isArray(files) || files.length === 0) {
       return Promise.resolve([])
     }
 
     let promises = files.map((file) => this.compile(file))
-    return Promise.all(promises).then((chunks: any) => {
-      chunks = flattenDeep(chunks).filter((chunk) => chunk)
-      return chunks
-    })
+    const chunks = await Promise.all(promises)
+    return flattenDeep(chunks).filter((chunk) => chunk) as Chunk[]
   }
 
   /**
    * 编译文件
    * @param file 文件位置
    */
-  public async compile (file: string | { file: string }): Promise<Chunk[]> {
+  public async compile (file: string | { file: string }): Promise<Chunk | Chunk[]> {
     let chunk = await this.convert(file)
 
     /**
@@ -75,7 +73,8 @@ export default class Parser {
     })
 
     chunk = await this.transform(chunk, rule, loaders)
-    let chunks = await this.resolve(chunk)
+
+    const chunks = await this.resolve(chunk)
     return chunks
   }
 
@@ -84,7 +83,7 @@ export default class Parser {
    * @param file 文件
    * @param chunkOptions 配置
    */
-  public convert (file: string | { file: string }, chunkOptions: Typings.ParcelChunkState = {}): Promise<Chunk> {
+  public async convert (file: string | { file: string }, chunkOptions: Typings.ParcelChunkState = {}): Promise<Chunk> {
     if (typeof file === 'object') {
       chunkOptions = isEmpty(chunkOptions) ? omit(file, 'file') : chunkOptions
       file = file.file
@@ -118,10 +117,9 @@ export default class Parser {
     const rule = this.matchRule(file, rules) || {}
     const chunk = GlobalAssets.add(file, Object.assign({}, chunkOptions, { rule }))
 
-    return fs.readFile(file).then((content) => {
-      chunk.update({ content })
-      return chunk
-    })
+    const content = await fs.readFile(file)
+    chunk.update({ content })
+    return chunk
   }
 
   /**
@@ -130,7 +128,7 @@ export default class Parser {
    * @param rule 规则
    * @param loeaders 加载器
    */
-  public transform (chunk: Chunk, rule: Typings.ParcelOptionRule, loaders: Typings.ParcelOptionRuleLoader[]): Promise<Chunk> {
+  public async transform (chunk: Chunk, rule: Typings.ParcelOptionRule, loaders: Typings.ParcelOptionRuleLoader[]): Promise<Chunk> {
     const { file } = chunk
 
     /**
@@ -214,14 +212,15 @@ export default class Parser {
       })
     })
 
-    return waterfall(queue).then(() => chunk)
+    await waterfall(queue)
+    return chunk
   }
 
   /**
    * 解析代码
    * @param chunk 代码片段
    */
-  public async resolve (chunk): Promise<Chunk[]> {
+  public async resolve (chunk: Chunk): Promise<Chunk | Chunk[]> {
     let result = GlobalResolver.resolve(chunk.metadata)
     let { file, content, dependencies, map: sourceMap } = result
     let { outDir, staticDir } = this.options
