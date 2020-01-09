@@ -4,9 +4,9 @@ import Project from './constants/project'
 import './commander/parcel'
 
 const helpAction = (): void => {
-  GlobalLogger.trace('\nExamples:')
-  GlobalLogger.trace('  $ wxparcel-script start --env development --watch')
-  GlobalLogger.trace('  $ wxparcel-script start --env production --config wx.config.js')
+  GlobalLogger.print('\nExamples:')
+  GlobalLogger.print('  $ wxparcel-script start --env development --watch')
+  GlobalLogger.print('  $ wxparcel-script start --env production --config wx.config.js')
 }
 
 program

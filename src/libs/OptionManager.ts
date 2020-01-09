@@ -61,9 +61,19 @@ export default class OptionManager {
   public env: string
 
   /**
+   * 日志输出类型
+   */
+  public stats?: 'none' | 'error' | 'verbose'
+
+  /**
    * 日志类型
    */
   public logType: Array<'console' | 'file'> | 'console' | 'file'
+
+  /**
+   * 日志级别
+   */
+  public logLevel: 'none' | 'error' | 'warning' | 'verbose'
 
   /**
    * 编译规则
@@ -156,7 +166,9 @@ export default class OptionManager {
 
     this.npmDir = options.nodeModuleDirectoryName || 'npm'
     this.env = process.env.NODE_ENV || 'development'
+    this.stats = options.hasOwnProperty('stats') ? options.stats : 'error'
     this.logType = options.hasOwnProperty('logType') ? options.logType : ['console']
+    this.logLevel = options.hasOwnProperty('logLevel') ? options.logLevel : 'error'
     this.rules = options.rules || []
 
     let valid = this.checkRules(this.rules)

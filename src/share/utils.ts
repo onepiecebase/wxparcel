@@ -105,9 +105,3 @@ export const isSameOutPath = (pathA: string, pathB: string, dirs: string[]): boo
 
   return dirs.findIndex((dir) => pathA.search(dir) !== -1 && pathB.search(dir) !== -1) !== -1
 }
-
-/**
- * 打印
- * @param message 信息
- */
-export const log = (message: string) => console.log('✨', chalk.white.bold(message))

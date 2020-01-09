@@ -31,9 +31,9 @@ program
 
 // Help Action
 function helpAction (): void {
-  GlobalLogger.trace('\nExamples:')
-  GlobalLogger.trace(`  $ wxparcel-script start --env development --watch`)
-  GlobalLogger.trace('  $ wxparcel-script start --env production --config wx.config.js')
+  GlobalLogger.print('\nExamples:')
+  GlobalLogger.print(`  $ wxparcel-script start --env development --watch`)
+  GlobalLogger.print('  $ wxparcel-script start --env production --config wx.config.js')
 }
 
 // Start Action
@@ -98,7 +98,7 @@ async function run (options: Typings.ParcelCliOptions = {}): Promise<void> {
     throw new Error(`Config file is not found, please ensure config file exists. ${configFile}`)
   }
 
-  let parcelOptions: any
+  let parcelOptions: { [key: string]: any } = {}
   switch (path.extname(configFile)) {
     case '.js': {
       if (/\.babel\.js$/.test(configFile)) {
@@ -120,6 +120,23 @@ async function run (options: Typings.ParcelCliOptions = {}): Promise<void> {
     options.publicPath = options.publicPath
   }
 
+  switch (statsMode) {
+    case 'none': {
+      parcelOptions.logLevel = 'none'
+      break
+    }
+
+    case 'error': {
+      parcelOptions.logLevel = 'error'
+      break
+    }
+
+    case 'verbose': {
+      parcelOptions.logLevel = 'verbose'
+      break
+    }
+  }
+
   let proto = Object.getPrototypeOf(parcelOptions)
   let descriptors = Object.entries(Object.getOwnPropertyDescriptors(proto))
   let getters = descriptors.filter(([_key, descriptor]) => typeof descriptor.get === 'function').map(([key]) => key)
@@ -128,12 +145,12 @@ async function run (options: Typings.ParcelCliOptions = {}): Promise<void> {
   parcelOptions = Object.assign({}, getterOptions, parcelOptions, options)
   await GlobalOptionManager.resolve(parcelOptions)
 
-  cleanConsole()
+  // cleanConsole()
   printInfo()
 
   let parcel = new Parcel(GlobalOptionManager)
   let stats = await parcel.run()
-  printStats(stats)
+  stats && printStats(stats)
 
   /**
    * 是否监听文件
@@ -142,8 +159,8 @@ async function run (options: Typings.ParcelCliOptions = {}): Promise<void> {
     GlobalOptionManager.watching = true
 
     let options = {
-      change: (file: string, hasBeenEffect: any) => GlobalLogger.trace(`\nFile ${chalk.bold(file)} has been changed, ${hasBeenEffect ? 'compile' : 'but it\'s not be required, ignore'}...\n`),
-      unlink: (file: string) => GlobalLogger.trace(`\nFile ${chalk.bold(file)} has been deleted, but it will be only delete from cache.\n`),
+      change: (file: string, hasBeenEffect: any) => GlobalLogger.print(`\nFile ${chalk.bold(file)} has been changed, ${hasBeenEffect ? 'compile' : 'but it\'s not be required, ignore'}...\n`),
+      unlink: (file: string) => GlobalLogger.print(`\nFile ${chalk.bold(file)} has been deleted, but it will be only delete from cache.\n`),
       complete: (stats: Typings.ParcelStats) => printStats(stats)
     }
 
@@ -151,79 +168,89 @@ async function run (options: Typings.ParcelCliOptions = {}): Promise<void> {
   }
 }
 
-function printInfo (): void {
-  const { srcDir, watching, pubPath } = GlobalOptionManager
-  GlobalLogger.trace(`Version: ${chalk.cyan.bold(Project.version)}`)
-  GlobalLogger.trace(`StaticServ: ${chalk.cyan.bold(pubPath)}`)
-  GlobalLogger.trace(`Open your ${chalk.cyan.bold('WeChat Develop Tool')} to serve. Download in ${chalk.white.bold('https://developers.weixin.qq.com/miniprogram/dev/devtools/devtools.html')}`)
-  watching && GlobalLogger.trace(`Watching folder ${chalk.white.bold(srcDir)}, cancel at ${chalk.white.bold('Ctrl + C')}`)
+function printStats (stats: Typings.ParcelStats): void {
+  switch (GlobalOptionManager.stats) {
+    case 'verbose': {
+      const maxWidth = 80
+
+      const headingTransform = (heading: string) => {
+        let name = heading.charAt(0).toUpperCase() + heading.slice(1)
+        return chalk.white.bold(name)
+      }
+
+      const assetsDataTransform = (file: string) => {
+        let { outDir, staticDir } = GlobalOptionManager
+        file = file.replace(outDir + path.sep, '').replace(staticDir + path.sep, '')
+
+        let dirname = path.dirname(file)
+        let filename = path.basename(file)
+        if (file.length > maxWidth) {
+          let length = maxWidth - filename.length
+          if (length > 0) {
+            dirname = dirname.substr(0, length - 3) + '..'
+          }
+        }
+
+        return chalk.green.bold(path.join(dirname, filename))
+      }
+
+      const formatBytes = (bytes: number, decimals = NaN) => {
+        // tslint:disable-next-line:triple-equals
+        if (bytes == 0) {
+          return '0 Bytes'
+        }
+
+        let k = 1024
+        let dm = decimals + 1 || 3
+        let sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+        let i = Math.floor(Math.log(bytes) / Math.log(k))
+
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+      }
+
+      const sizeDataTransform = (size: number) => {
+        return formatBytes(size)
+      }
+
+      const options = {
+        headingTransform: headingTransform,
+        config: {
+          assets: {
+            maxWidth: maxWidth,
+            align: 'right',
+            dataTransform: assetsDataTransform
+          },
+          size: {
+            align: 'right',
+            dataTransform: sizeDataTransform
+          }
+        }
+      }
+
+      const message = columnify(stats, options)
+
+      if (stats.spendTime) {
+        GlobalLogger.print(message)
+        GlobalLogger.print(`\n${chalk.gray('Spend Time:')} ${chalk.white.bold(stats.spendTime + '')}ms\n`)
+      }
+
+      printInfo()
+      break
+    }
+
+    default: {
+      GlobalLogger.print(`✨ ${chalk.cyan.bold('Compile has been done.')}`)
+      break
+    }
+  }
 }
 
-function printStats (stats: Typings.ParcelStats): void {
-  const maxWidth = 80
-
-  const headingTransform = (heading: string) => {
-    let name = heading.charAt(0).toUpperCase() + heading.slice(1)
-    return chalk.white.bold(name)
-  }
-
-  const assetsDataTransform = (file: string) => {
-    let { outDir, staticDir } = GlobalOptionManager
-    file = file.replace(outDir + path.sep, '').replace(staticDir + path.sep, '')
-
-    let dirname = path.dirname(file)
-    let filename = path.basename(file)
-    if (file.length > maxWidth) {
-      let length = maxWidth - filename.length
-      if (length > 0) {
-        dirname = dirname.substr(0, length - 3) + '..'
-      }
-    }
-
-    return chalk.green.bold(path.join(dirname, filename))
-  }
-
-  const formatBytes = (bytes: number, decimals = NaN) => {
-    // tslint:disable-next-line:triple-equals
-    if (bytes == 0) {
-      return '0 Bytes'
-    }
-
-    let k = 1024
-    let dm = decimals + 1 || 3
-    let sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-    let i = Math.floor(Math.log(bytes) / Math.log(k))
-
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
-  }
-
-  const sizeDataTransform = (size: number) => {
-    return formatBytes(size)
-  }
-
-  const options = {
-    headingTransform: headingTransform,
-    config: {
-      assets: {
-        maxWidth: maxWidth,
-        align: 'right',
-        dataTransform: assetsDataTransform
-      },
-      size: {
-        align: 'right',
-        dataTransform: sizeDataTransform
-      }
-    }
-  }
-
-  const message = columnify(stats, options)
-
-  if (stats.spendTime) {
-    GlobalLogger.trace(message)
-    GlobalLogger.trace(`\n${chalk.gray('Spend Time:')} ${chalk.white.bold(stats.spendTime + '')}ms\n`)
-  }
-
-  printInfo()
+function printInfo (): void {
+  const { srcDir, watching, pubPath } = GlobalOptionManager
+  GlobalLogger.print(`Version: ${chalk.cyan.bold(Project.version)}`)
+  GlobalLogger.print(`StaticServ: ${chalk.cyan.bold(pubPath)}`)
+  GlobalLogger.print(`Open your ${chalk.cyan.bold('WeChat Develop Tool')} to serve. Download in ${chalk.white.bold('https://developers.weixin.qq.com/miniprogram/dev/devtools/devtools.html')}`)
+  watching && GlobalLogger.print(`Watching folder ${chalk.white.bold(srcDir)}, cancel at ${chalk.white.bold('Ctrl + C')}`)
 }
 
 function cleanConsole (): void {

@@ -3,7 +3,7 @@ import * as path from 'path'
 import { promisify } from 'util'
 import commandExists from 'command-exists'
 import Queue from '../libs/Queue'
-import { log } from './utils'
+import GlobalLogger from '../services/logger'
 import { pipeSpawn } from './process'
 import * as Typings from '../typings'
 
@@ -46,10 +46,10 @@ export const installDependencies = async (modules: string[] | string, execPath: 
 
   let linkedModules = await fetchNpmLinks(execPath)
   try {
-    log(`Try install ${modules.join(', ')}, please wait...`)
+    GlobalLogger.print(`Try install ${modules.join(', ')}, please wait...`)
     await pipeSpawn(packageManager, args, { stdio: 'inherit' })
 
-    log(`Install ${modules.join(', ')} completed`)
+    GlobalLogger.print(`Install ${modules.join(', ')} completed`)
     installedModules.splice(installedModules.length, 0, ...modules)
 
     let promises = linkedModules.map(({ file, real }) => !fs.existsSync(file) ? fs.symlink(real, file) : Promise.resolve())
