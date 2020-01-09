@@ -9,7 +9,7 @@ import * as Types from './constants/chunk-type'
 export interface ParcelCliOptions {
   config?: string
   watch?: boolean
-  stats?: boolean
+  stats?: 'none' | 'error' | 'verbose'
   publicPath?: string
   sourceMap?: boolean | string
   env?: string
@@ -175,6 +175,11 @@ export interface ParcelLoaderOptions extends NonFunctionProperties<OptionManager
 }
 
 /**
+ * 加载器
+ */
+export type ParcelLoader = (asset: Chunk['metadata'], options: ParcelLoaderOptions) => Promise<{ code: string | Buffer, map?: string | object, dependencies?: ParcelChunkDependency[] | string[] }>
+
+/**
  * 代码片段状态
  */
 export interface ParcelChunkState {
@@ -208,6 +213,38 @@ export interface ParcelChunkState {
    */
   destination?: string
 }
+
+/**
+ * 输出结果信息
+ */
+export interface ParcelStats extends Array<{ assets: string[], size: number }> {
+  spendTime?: number
+}
+
+/**
+ * 插件
+ */
+export interface ParcelPlugin {
+  applyAsync?: (options: NonFunctionProperties<OptionManager>) => Promise<any>
+  applyBefore?: (options: OptionManager) => Promise<any>
+  applyBeforeTransform?: (assets: Assets, options: NonFunctionProperties<OptionManager>) => Promise<any>
+}
+
+export interface ParcelChunkDependency {
+  file?: string
+  dependency: string
+  destination?: string
+  required?: string
+  type?: ValueOf<typeof Types>
+}
+
+export interface PMInstallOptions {
+  installPeers?: boolean
+  saveDev?: boolean
+  packageManager?: string
+}
+
+export type ProcessStdout = (data: Buffer, type?: string) => void
 
 /**
  * 微信小程序项目配置
@@ -251,33 +288,3 @@ export interface WXPluginConfig {
     [key: string]: string
   }
 }
-
-/**
- * 加载器
- */
-export type ParcelLoader = (asset: Chunk['metadata'], options: ParcelLoaderOptions) => Promise<{ code: string | Buffer, map?: string | object, dependencies?: ParcelChunkDependency[] | string[] }>
-
-/**
- * 插件
- */
-export interface ParcelPlugin {
-  applyAsync?: (options: NonFunctionProperties<OptionManager>) => Promise<any>
-  applyBefore?: (options: OptionManager) => Promise<any>
-  applyBeforeTransform?: (assets: Assets, options: NonFunctionProperties<OptionManager>) => Promise<any>
-}
-
-export interface ParcelChunkDependency {
-  file?: string
-  dependency: string
-  destination?: string
-  required?: string
-  type?: ValueOf<typeof Types>
-}
-
-export interface PMInstallOptions {
-  installPeers?: boolean
-  saveDev?: boolean
-  packageManager?: string
-}
-
-export type ProcessStdout = (data: Buffer, type?: string) => void

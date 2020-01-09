@@ -11,9 +11,85 @@ import * as Typings from '../typings'
 import Project from '../constants/project'
 import babelRequire from '../vendors/babel-register'
 
+const MESSAGE_PADDING = ' '.padStart(27)
+
+program
+.command('start')
+.description('start the compilation process')
+.option('-c, --config <config>', 'setting configuration file')
+.option('-w, --watch', 'open the listener for file changes')
+.option('--publicPath <publicPath>', 'set public path of static resources')
+.option('--sourceMap <sourceMap>', 'generate sourceMap')
+.option('--env <env>', `setting process.env.NODE_ENV variables` +
+`\n${MESSAGE_PADDING}${chalk.bold('dev|develop|development')} for development` +
+`\n${MESSAGE_PADDING}${chalk.bold('test|unitest|prerelease')} for test` +
+`\n${MESSAGE_PADDING}${chalk.bold('prod|product|production')} for production`
+)
+.option('--bundle <bundle>', 'generate bundlers with generated bundler')
+.on('--help', helpAction)
+.action(startAction)
+
+// Help Action
+function helpAction (): void {
+  GlobalLogger.trace('\nExamples:')
+  GlobalLogger.trace(`  $ wxparcel-script start --env development --watch`)
+  GlobalLogger.trace('  $ wxparcel-script start --env production --config wx.config.js')
+}
+
+// Start Action
+async function startAction (options: Typings.ParcelCliOptions = {}): Promise<void> {
+  try {
+    let { config, env } = options
+
+    switch (env) {
+      case 'dev':
+      case 'develop':
+      case 'development': {
+        process.env.NODE_ENV = 'development'
+        break
+      }
+
+      case 'test':
+      case 'unitest':
+      case 'prerelease': {
+        process.env.NODE_ENV = 'test'
+        break
+      }
+
+      case 'prod':
+      case 'product':
+      case 'production':
+      case 'release': {
+        process.env.NODE_ENV = 'production'
+        break
+      }
+    }
+
+    if (!config) {
+      config = path.join(__dirname, '../constants/config.js')
+    }
+
+    if (!path.isAbsolute(config)) {
+      config = path.join(GlobalOptionManager.rootDir, config)
+    }
+
+    if (!fs.existsSync(config)) {
+      throw new Error(`Config file is not found, please ensure config file exists. ${config}`)
+    }
+
+    options.config = config
+    options.watch = options.hasOwnProperty('watch')
+
+    await run(options)
+
+  } catch (error) {
+    GlobalLogger.error(error)
+  }
+}
+
 // 执行编译流程
-const run = async (options: Typings.ParcelCliOptions = {}) => {
-  let { config: configFile, stats: displayStats } = options
+async function run (options: Typings.ParcelCliOptions = {}): Promise<void> {
+  let { config: configFile, stats: statsMode } = options
   if (!configFile) {
     throw new TypeError('Config file is not provided')
   }
@@ -57,7 +133,7 @@ const run = async (options: Typings.ParcelCliOptions = {}) => {
 
   let parcel = new Parcel(GlobalOptionManager)
   let stats = await parcel.run()
-  displayStats && printStats(stats)
+  printStats(stats)
 
   /**
    * 是否监听文件
@@ -66,100 +142,16 @@ const run = async (options: Typings.ParcelCliOptions = {}) => {
     GlobalOptionManager.watching = true
 
     let options = {
-      change: (file, hasBeenEffect) => GlobalLogger.trace(`\nFile ${chalk.bold(file)} has been changed, ${hasBeenEffect ? 'compile' : 'but it\'s not be required, ignore'}...\n`),
-      unlink: (file) => GlobalLogger.trace(`\nFile ${chalk.bold(file)} has been deleted, but it will be only delete from cache.\n`),
-      complete: (stats) => displayStats && printStats(stats)
+      change: (file: string, hasBeenEffect: any) => GlobalLogger.trace(`\nFile ${chalk.bold(file)} has been changed, ${hasBeenEffect ? 'compile' : 'but it\'s not be required, ignore'}...\n`),
+      unlink: (file: string) => GlobalLogger.trace(`\nFile ${chalk.bold(file)} has been deleted, but it will be only delete from cache.\n`),
+      complete: (stats: Typings.ParcelStats) => printStats(stats)
     }
 
     parcel.watch(options)
   }
 }
 
-// Start Action
-const startAction = async (options: Typings.ParcelCliOptions = {}) => {
-  try {
-    let { config, env } = options
-
-    switch (env) {
-      case 'dev':
-      case 'develop':
-      case 'development': {
-        process.env.NODE_ENV = 'development'
-        break
-      }
-
-      case 'test':
-      case 'unitest':
-      case 'prerelease': {
-        process.env.NODE_ENV = 'test'
-        break
-      }
-
-      case 'prod':
-      case 'product':
-      case 'production':
-      case 'release': {
-        process.env.NODE_ENV = 'production'
-        break
-      }
-    }
-
-    if (!config) {
-      config = path.join(__dirname, '../constants/config.js')
-    }
-
-    if (!path.isAbsolute(config)) {
-      config = path.join(GlobalOptionManager.rootDir, config)
-    }
-
-    if (!fs.existsSync(config)) {
-      throw new Error(`Config file is not found, please ensure config file exists. ${config}`)
-    }
-
-    if (typeof options.stats !== 'boolean') {
-      options.stats = false
-    }
-
-    options.config = config
-    options.watch = options.hasOwnProperty('watch')
-
-    await run(options)
-
-  } catch (error) {
-    GlobalLogger.error(error)
-  }
-}
-
-// Help Action
-const helpAction = () => {
-  GlobalLogger.trace('\nExamples:')
-  GlobalLogger.trace(`  $ wxparcel-script start --env development --watch`)
-  GlobalLogger.trace('  $ wxparcel-script start --env production --config wx.config.js')
-}
-
-const padidngMessage = ' '.padStart(27)
-
-program
-  .command('start')
-  .description('start the compilation process')
-  .option('-c, --config <config>', 'setting configuration file')
-  .option('-w, --watch', 'open the listener for file changes')
-  .option('--publicPath <publicPath>', 'set public path of static resources')
-  .option('--sourceMap <sourceMap>', 'generate sourceMap')
-  .option('--env <env>', `setting process.env.NODE_ENV variables` +
-  `\n${padidngMessage}${chalk.bold('dev|develop|development')} for development` +
-  `\n${padidngMessage}${chalk.bold('test|unitest|prerelease')} for test` +
-  `\n${padidngMessage}${chalk.bold('prod|product|production')} for production`
-  )
-  .option('--bundle <bundle>', 'generate bundlers with generated bundler')
-  .on('--help', helpAction)
-  .action(startAction)
-
-function cleanConsole () {
-  GlobalLogger.clear()
-}
-
-function printInfo () {
+function printInfo (): void {
   const { srcDir, watching, pubPath } = GlobalOptionManager
   GlobalLogger.trace(`Version: ${chalk.cyan.bold(Project.version)}`)
   GlobalLogger.trace(`StaticServ: ${chalk.cyan.bold(pubPath)}`)
@@ -167,15 +159,15 @@ function printInfo () {
   watching && GlobalLogger.trace(`Watching folder ${chalk.white.bold(srcDir)}, cancel at ${chalk.white.bold('Ctrl + C')}`)
 }
 
-function printStats (stats: any = {}) {
+function printStats (stats: Typings.ParcelStats): void {
   const maxWidth = 80
 
-  const headingTransform = (heading) => {
+  const headingTransform = (heading: string) => {
     let name = heading.charAt(0).toUpperCase() + heading.slice(1)
     return chalk.white.bold(name)
   }
 
-  const assetsDataTransform = (file) => {
+  const assetsDataTransform = (file: string) => {
     let { outDir, staticDir } = GlobalOptionManager
     file = file.replace(outDir + path.sep, '').replace(staticDir + path.sep, '')
 
@@ -191,7 +183,7 @@ function printStats (stats: any = {}) {
     return chalk.green.bold(path.join(dirname, filename))
   }
 
-  const formatBytes = (bytes, decimals = NaN) => {
+  const formatBytes = (bytes: number, decimals = NaN) => {
     // tslint:disable-next-line:triple-equals
     if (bytes == 0) {
       return '0 Bytes'
@@ -205,7 +197,7 @@ function printStats (stats: any = {}) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
   }
 
-  const sizeDataTransform = (size) => {
+  const sizeDataTransform = (size: number) => {
     return formatBytes(size)
   }
 
@@ -228,8 +220,12 @@ function printStats (stats: any = {}) {
 
   if (stats.spendTime) {
     GlobalLogger.trace(message)
-    GlobalLogger.trace(`\n${chalk.gray('Spend Time:')} ${chalk.white.bold(stats.spendTime)}ms\n`)
+    GlobalLogger.trace(`\n${chalk.gray('Spend Time:')} ${chalk.white.bold(stats.spendTime + '')}ms\n`)
   }
 
   printInfo()
+}
+
+function cleanConsole (): void {
+  GlobalLogger.clear()
 }

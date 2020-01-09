@@ -65,6 +65,9 @@ export default class OptionManager {
    */
   public logType: Array<'console' | 'file'> | 'console' | 'file'
 
+  /**
+   * 编译规则
+   */
   public rules: Typings.ParcelOptionRule[]
 
   /**

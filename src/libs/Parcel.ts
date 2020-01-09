@@ -47,7 +47,7 @@ export default class Parcel {
   /**
    * 运行
    */
-  public async run (): Promise<void> {
+  public async run (): Promise<Typings.ParcelStats> {
     if (this.running === true) {
       return Promise.reject(new Error('WXParcel is running'))
     }
@@ -100,7 +100,7 @@ export default class Parcel {
   /**
    * 监听文件
    */
-  public watch (options: Typings.ParcelWatchOptions = {}) {
+  public watch (options: Typings.ParcelWatchOptions = {}): void {
     const { appConfigFile, bundle: useBundle } = this.options
 
     // 判断是否为被忽略文件
@@ -282,7 +282,7 @@ export default class Parcel {
    * @param chunks Chunk 集合
    * @returns {Promise}
    */
-  public flush (chunks: Chunk[]): Promise<Array<{ assets: string[], size: number }>> {
+  public async flush (chunks: Chunk[]): Promise<Typings.ParcelStats> {
     const { sourceMap: useSourceMap } = this.options
 
     if (!Array.isArray(chunks) || chunks.length === 0) {
@@ -313,7 +313,8 @@ export default class Parcel {
       return Promise.all(promises)
     })
 
-    return Promise.all(promises).then((stats: any) => flatten(stats))
+    const stats = await Promise.all(promises)
+    return flatten(stats) as any
   }
 
   /**
