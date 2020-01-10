@@ -154,7 +154,7 @@ export default class Parcel {
     }
 
     // 开始执行
-    const start = async (file: string, involvedFiles: string[] = []): Promise<void> => {
+    const compile = async (file: string, involvedFiles: string[] = []): Promise<void> => {
       try {
         let startTime = Date.now()
         this.running = true
@@ -162,10 +162,27 @@ export default class Parcel {
         let instance = new Assets(this.options)
         await this.hook('beforeTransform')(instance)
 
+        /**
+         * 更新文件内容
+         * 因为上一次输出的内容保存在 content 中,
+         * 因此这里需要重新更新一次内容
+         */
         if (GlobalAssets.exists(file)) {
-          let chunk = GlobalAssets.get(file)
-          let source = await fs.readFile(chunk.file)
+          const chunk = GlobalAssets.get(file)
+          const source = await fs.readFile(chunk.file)
           chunk.update({ content: source })
+        }
+
+        if (involvedFiles.length > 0) {
+          const promises = involvedFiles.map(async (file: string) => {
+            if (GlobalAssets.exists(file)) {
+              const chunk = GlobalAssets.get(file)
+              const source = await fs.readFile(chunk.file)
+              chunk.update({ content: source })
+            }
+          })
+
+          await Promise.all(promises)
         }
 
         // 包含编译与打包
@@ -205,7 +222,7 @@ export default class Parcel {
         }
 
         this.options.resolveWXAppConf(file)
-        start(file).catch(() => {
+        compile(file).catch(() => {
           // nothing todo...
         })
 
@@ -221,7 +238,7 @@ export default class Parcel {
           options.change(file, true)
         }
 
-        start(file).catch(() => {
+        compile(file).catch(() => {
           // nothing todo...
         })
 
@@ -239,7 +256,7 @@ export default class Parcel {
         }
 
         let involvedFiles = chunks.map((chunk) => chunk.file)
-        start(file, involvedFiles).catch(() => {
+        compile(file, involvedFiles).catch(() => {
           // nothing todo...
         })
 
