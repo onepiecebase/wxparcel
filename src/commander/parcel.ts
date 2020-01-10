@@ -145,8 +145,10 @@ async function run (options: Typings.ParcelCliOptions = {}): Promise<void> {
   parcelOptions = Object.assign({}, getterOptions, parcelOptions, options)
   await GlobalOptionManager.resolve(parcelOptions)
 
-  // cleanConsole()
+  cleanConsole()
   printInfo()
+
+  GlobalLogger.print(chalk.cyan.bold('Compiling...'))
 
   let parcel = new Parcel(GlobalOptionManager)
   let stats = await parcel.run()
@@ -239,7 +241,7 @@ function printStats (stats: Typings.ParcelStats): void {
     }
 
     default: {
-      GlobalLogger.print(`✨ ${chalk.cyan.bold('Compile has been done.')}`)
+      GlobalLogger.print(`✨ ${chalk.cyan.bold('Compiled has been done.')}`)
       break
     }
   }

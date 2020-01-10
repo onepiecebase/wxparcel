@@ -200,7 +200,10 @@ export default class Parcel {
        * 若为入口配置文件则直接重新解析即可
        */
       if (appConfigFile === file) {
-        typeof options.change === 'function' && options.change(file, true)
+        if (typeof options.change === 'function') {
+          options.change(file, true)
+        }
+
         this.options.resolveWXAppConf(file)
         start(file).catch(() => {
           // nothing todo...
@@ -214,7 +217,10 @@ export default class Parcel {
        * 如果是则直接重新编译该文件即可
        */
       if (GlobalAssets.exists(file)) {
-        typeof options.change === 'function' && options.change(file, true)
+        if (typeof options.change === 'function') {
+          options.change(file, true)
+        }
+
         start(file).catch(() => {
           // nothing todo...
         })
@@ -228,6 +234,10 @@ export default class Parcel {
        */
       let chunks = GlobalAssets.findChunkByDependent(file)
       if (chunks.length) {
+        if (typeof options.change === 'function') {
+          options.change(file, true)
+        }
+
         let involvedFiles = chunks.map((chunk) => chunk.file)
         start(file, involvedFiles).catch(() => {
           // nothing todo...
@@ -236,7 +246,9 @@ export default class Parcel {
         return
       }
 
-      typeof options.change === 'function' && options.change(file, false)
+      if (typeof options.change === 'function') {
+        options.change(file, false)
+      }
     }
 
     // 处理删除文件事件
