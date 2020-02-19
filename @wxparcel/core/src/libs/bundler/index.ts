@@ -17,7 +17,7 @@ export default class Bundler {
   /**
    * 打包器集合
    */
-  public bundlers: Array<{ regexp: RegExp, bundler: { new (chunks: Chunk[], options: OptionManager): BaseBundler } }>
+  public bundlers: Array<{ regexp: RegExp; bundler: { new (chunks: Chunk[], options: OptionManager): BaseBundler } }>
 
   constructor(options: OptionManager) {
     this.options = options

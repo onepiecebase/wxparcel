@@ -11,10 +11,10 @@ import * as Types from '../constants/chunk-type'
 import * as Typings from '../typings'
 
 interface ReviseOptions {
-  type?: Typings.ValueOf<typeof Types>
-  convertDependency?: Resolver['convertDependency']
-  convertDestination?: (file: string, options?: OptionManager) => string
-  convertFinallyState?: Resolver['convertFinallyState']
+  type?: Typings.ValueOf<typeof Types>;
+  convertDependency?: Resolver['convertDependency'];
+  convertDestination?: (file: string, options?: OptionManager) => string;
+  convertFinallyState?: Resolver['convertFinallyState'];
 }
 
 /**
@@ -50,7 +50,7 @@ export default class Resolver {
   /**
    * 解析, 并返回文件,代码,依赖等信息
    */
-  public resolve(): { file: string, content: string | Buffer, dependencies: Typings.ParcelChunkDependency[], map?: string | object } {
+  public resolve(): { file: string; content: string | Buffer; dependencies: Typings.ParcelChunkDependency[]; map?: string | object } {
     return { file: this.file, content: this.source, dependencies: this.dependencies }
   }
 

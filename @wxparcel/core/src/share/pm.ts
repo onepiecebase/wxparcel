@@ -123,7 +123,7 @@ export const detectSupportYarn = async (): Promise<boolean> => {
  * @param rootPath 执行路径
  * @returns 文件名集合
  */
-export const fetchNpmLinks = async (rootPath: string = cwdPath): Promise<Array<{ file: string, real: string }>> => {
+export const fetchNpmLinks = async (rootPath: string = cwdPath): Promise<Array<{ file: string; real: string }>> => {
   const links = []
 
   const nodeModules = path.join(rootPath, './node_modules')

@@ -22,7 +22,7 @@ export default class Resolver {
   /**
    * 解析器集合
    */
-  public resolvers: Array<{ regexp: RegExp, resolver: { new (asset: Chunk['metadata'], options: OptionManager): BaseResolver } }>
+  public resolvers: Array<{ regexp: RegExp; resolver: { new (asset: Chunk['metadata'], options: OptionManager): BaseResolver } }>
 
   constructor(options: OptionManager) {
     this.options = options

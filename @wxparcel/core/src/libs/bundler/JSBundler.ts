@@ -151,7 +151,7 @@ export default class JSBundler extends Bundler {
    * @param chunks
    * @returns 包裹后的代码块
    */
-  public async wrapBundler(chunks: Chunk[], file: string): Promise<{ code: string, sourceMapNode: SourceNode }> {
+  public async wrapBundler(chunks: Chunk[], file: string): Promise<{ code: string; sourceMapNode: SourceNode }> {
     const { sourceMap: useSourceMap } = this.options
     const wrapper = await this.wrapModules(chunks, file)
     const { sourceMapNode: node } = wrapper
@@ -175,7 +175,7 @@ export default class JSBundler extends Bundler {
    * @param chunks
    * @returns 包裹后的代码块
    */
-  public async wrapModules(chunks: Chunk[], file: string): Promise<{ code: string, sourceMapNode: SourceNode }> {
+  public async wrapModules(chunks: Chunk[], file: string): Promise<{ code: string; sourceMapNode: SourceNode }> {
     const { sourceMap: useSourceMap } = this.options
 
     const codes = []
@@ -209,7 +209,7 @@ export default class JSBundler extends Bundler {
    * @param chunk 代码片段
    * @returns 包裹后的名称
    */
-  public async wrapModule(chunk: Chunk): Promise<{ code: string, sourceMapNode: SourceNode }> {
+  public async wrapModule(chunk: Chunk): Promise<{ code: string; sourceMapNode: SourceNode }> {
     const id = this.remember(chunk.destination)
     const code = chunk.content.toString()
     const dependencies = {}
@@ -241,7 +241,7 @@ export default class JSBundler extends Bundler {
     code: string,
     dependencies: { [key: string]: string },
     map: string | { [key: string]: string }
-  ): Promise<{ code: string, sourceMapNode: SourceNode }> {
+  ): Promise<{ code: string; sourceMapNode: SourceNode }> {
     const { sourceMap: useSourceMap } = this.options
     const openCode = `${this.wrapQuote(name)}: [function(require,module,exports) {\n`
     const closeCode = `\n}, ${JSON.stringify(dependencies)}],\n`
