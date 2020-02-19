@@ -1,5 +1,7 @@
 {
-  "navigationBarTitleText": "Home",
+  "navigationBarTitleText": "Getting Started",
   "enablePullDownRefresh": false,
-  "usingComponents": {}
+  "usingComponents": {
+    "spinner": "../../components/spinner/spinner"
+  }
 }

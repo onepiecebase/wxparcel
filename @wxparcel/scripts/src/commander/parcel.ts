@@ -116,6 +116,7 @@ async function run(options: Typings.ParcelCliOptions = {}): Promise<void> {
   } else {
     // 如果没有配置, 则使用默认配置
     parcelOptions = await localRequire('wxparcel-config-normal', process.cwd(), true)
+    parcelOptions = parcelOptions.default || parcelOptions
   }
 
   if (options.hasOwnProperty('publicPath')) {
@@ -148,7 +149,7 @@ async function run(options: Typings.ParcelCliOptions = {}): Promise<void> {
   await GlobalOptionManager.resolve(parcelOptions)
 
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  cleanConsole()
+  // cleanConsole()
 
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   printInfo()

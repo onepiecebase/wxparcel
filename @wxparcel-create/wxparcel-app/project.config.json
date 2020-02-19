@@ -10,9 +10,11 @@
   "miniprogramRoot": "app/",
   "compileType": "miniprogram",
   "libVersion": "1.9.94",
-  "appid": "wxb1034cbb0b1ee32f",
-  "projectname": "wxparcel-demo",
+  "projectname": "wxparcel-create-app",
   "isGameTourist": false,
+  "appid": "wxe91685411de8a15c",
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
       "current": -1,

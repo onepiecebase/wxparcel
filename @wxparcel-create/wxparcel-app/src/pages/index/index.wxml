@@ -1,1 +1,4 @@
-<view>Hello World</view>
+<view class="section">
+  <spinner class="spinner" />
+  <view class="hero">Getting Started</view>
+</view>

@@ -9,5 +9,5 @@
       "registry": "https://registry.npmjs.org/"
     }
   },
-  "packages": ["@wxparcel-config/*", "@wxparcel-loader/*", "@wxparcel-plugin/*", "@wxparcel/*"]
+  "packages": ["@wxparcel-config/*", "@wxparcel-loader/*", "@wxparcel-plugin/*", "@wxparcel/*", "@wxparcel-create/*"]
 }

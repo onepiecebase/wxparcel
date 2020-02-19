@@ -100,6 +100,14 @@ class Config {
   }
 
   /**
+   * 获取真正的配置
+   */
+  public get source() {
+    const { rules, plugins } = this
+    return { rules, plugins }
+  }
+
+  /**
    * 设置规则
    * @param name 规则名称
    * @param callback 回调
@@ -137,6 +145,14 @@ class Config {
   public delPlugin(plugin: { new (): ParcelPlugin } | ParcelPlugin): void {
     const index = plugins.findIndex(item => (typeof plugin === 'function' ? item === plugin : item.constructor === plugin.constructor))
     index !== -1 && plugins.splice(index, 1)
+  }
+
+  public toSource() {
+    return this.source
+  }
+
+  public toString() {
+    return JSON.stringify(this.source)
   }
 }
 
