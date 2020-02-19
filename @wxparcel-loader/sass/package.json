@@ -1,6 +1,6 @@
 {
   "name": "wxparcel-loader-sass",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.2",
   "main": "libs/index.js",
   "license": "MIT",
   "scripts": {
@@ -16,15 +16,15 @@
     "node-sass": "^4.13.1"
   },
   "devDependencies": {
+    "@types/node-sass": "^4.11.0",
     "@typescript-eslint/eslint-plugin": "^2.16.0",
     "@typescript-eslint/parser": "^2.16.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
     "prettier": "^1.19.1",
-    "@types/node-sass": "^4.11.0",
     "rimraf": "^3.0.2",
     "typescript": "^3.7.5",
-    "wxparcel-core": "2.0.0-alpha.1"
+    "wxparcel-core": "^2.0.0-alpha.2"
   }
 }

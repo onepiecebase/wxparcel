@@ -1,6 +1,6 @@
 {
   "name": "wxparcel-config-normal",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.2",
   "main": "libs/index.js",
   "license": "MIT",
   "scripts": {
@@ -13,13 +13,13 @@
     "start": "npm run develop"
   },
   "dependencies": {
-    "wxparcel-core": "^2.0.0-alpha.1",
-    "wxparcel-loader-babel": "^2.0.0-alpha.1",
-    "wxparcel-loader-envify": "^2.0.0-alpha.1",
-    "wxparcel-loader-uglifyjs": "^2.0.0-alpha.1",
-    "wxparcel-loader-sass": "^2.0.0-alpha.1",
-    "wxparcel-plugin-clean": "^2.0.0-alpha.1",
-    "wxparcel-plugin-devserver": "^2.0.0-alpha.1"
+    "wxparcel-core": "^2.0.0-alpha.2",
+    "wxparcel-loader-babel": "^2.0.0-alpha.2",
+    "wxparcel-loader-envify": "^2.0.0-alpha.2",
+    "wxparcel-loader-sass": "^2.0.0-alpha.2",
+    "wxparcel-loader-uglifyjs": "^2.0.0-alpha.2",
+    "wxparcel-plugin-clean": "^2.0.0-alpha.2",
+    "wxparcel-plugin-devserver": "^2.0.0-alpha.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.16.0",
