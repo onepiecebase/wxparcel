@@ -6,18 +6,28 @@
 [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/onepiecebase/wxparcel/blob/master/LICENSE)
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
-# WXParcel - 小程序简易构建工具
+# 小程序简易工作流
 
 该工作流并非使用其他工作流之上进行封装, 因此可能会出现使用上的小问题, 如果有发现任何问题欢迎到 issue 进行提交
 
 - [使用手册](https://onepiecebase.github.io/wxparcel/)
 
-## 安装使用
+## 创建项目
 
 ```bash
-# 安装
-$ npm i -g wxparcel-script
+$ yarn create wxparcel-app
 
+# 安装CLI
+$ npm i -g create-wxparcel-app
+$ create-wxparcel-app
+
+# 执行
+$ yarn start
+```
+
+## 执行
+
+```bash
 # 运行并开启静态资源服务
 $ wxparcel-script start --watch
 
