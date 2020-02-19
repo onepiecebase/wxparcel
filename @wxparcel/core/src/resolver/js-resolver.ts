@@ -174,7 +174,7 @@ export default class JSResolver extends Resolver {
    * 筛选系统依赖
    * @param dependencies 依赖
    */
-  public filterDependencies(dependencies: Array<{ dependency: any; [key: string]: any }>): Array<{ dependency: any; [key: string]: any }> {
+  public filterDependencies(dependencies: Array<{ dependency: any, [key: string]: any }>): Array<{ dependency: any, [key: string]: any }> {
     return dependencies.filter(({ dependency }) => {
       /**
        * 过滤系统依赖

@@ -14,6 +14,6 @@ program
   .option('-q, --quiet', 'do not print any information')
   .on('--help', helpAction)
 
-let params = process.argv
+const params = process.argv
 !params.slice(2).length && program.outputHelp()
 program.parse(params)

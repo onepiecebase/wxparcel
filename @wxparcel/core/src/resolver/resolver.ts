@@ -50,7 +50,7 @@ export default class Resolver {
   /**
    * 解析, 并返回文件,代码,依赖等信息
    */
-  public resolve(): { file: string; content: string | Buffer; dependencies: Typings.ParcelChunkDependency[]; map?: string | object } {
+  public resolve(): { file: string, content: string | Buffer, dependencies: Typings.ParcelChunkDependency[], map?: string | object } {
     return { file: this.file, content: this.source, dependencies: this.dependencies }
   }
 

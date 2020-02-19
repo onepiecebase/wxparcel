@@ -1,6 +1,6 @@
 {
   "name": "wxparcel-plugin-devserver",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.2",
   "main": "libs/index.js",
   "license": "MIT",
   "scripts": {
@@ -18,18 +18,18 @@
     "serve-static": "^1.14.1"
   },
   "devDependencies": {
+    "@types/finalhandler": "^1.1.0",
+    "@types/fs-extra": "^8.0.1",
+    "@types/lodash": "^4.14.149",
+    "@types/serve-static": "^1.13.3",
     "@typescript-eslint/eslint-plugin": "^2.16.0",
     "@typescript-eslint/parser": "^2.16.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
     "prettier": "^1.19.1",
-    "@types/finalhandler": "^1.1.0",
-    "@types/fs-extra": "^8.0.1",
-    "@types/lodash": "^4.14.149",
-    "@types/serve-static": "^1.13.3",
     "rimraf": "^3.0.2",
     "typescript": "^3.7.5",
-    "wxparcel-core": "2.0.0-alpha.1"
+    "wxparcel-core": "^2.0.0-alpha.2"
   }
 }
