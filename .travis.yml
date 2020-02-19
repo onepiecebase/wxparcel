@@ -9,14 +9,14 @@ cache:
     - node_modules
 
 install:
-  - npm install
+  - yarn install
 
 script:
-  - npm run product
+  - yarn product
 
 before_deploy:
   - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> $HOME/.npmrc 2> /dev/null
-  - npm run product
+  - yarn product
 
 deploy:
   - provider: script
@@ -24,4 +24,4 @@ deploy:
     on:
       tags: true
     script:
-      - npm run ci:deploy
+      - yarn ci:deploy
