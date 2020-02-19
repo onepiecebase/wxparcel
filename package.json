@@ -1,0 +1,160 @@
+{
+  "name": "wxparcel",
+  "version": "2.0.0-alpha.1",
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "DavidJones",
+      "email": "qowera@gmail.com",
+      "url": "https://github.com/DavidKk"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:onepiecebase/wxparcel.git"
+  },
+  "scripts": {
+    "commit": "git-cz",
+    "lint": "lerna run --parallel lint",
+    "format": "prettier --config ./prettierrc.js --write \"**/*.{js,md,json,yml}\" && lerna run --parallel format",
+    "docs:server": "concurrently \"cpx './README.md' ./gh-pages --watch\" \"docsify serve ./gh-pages\"",
+    "docs": "cpx './README.md' ./gh-pages",
+    "install": "lerna bootstrap",
+    "release": "lerna publish from-git --yes --npm-client yarn --npm-tag alpha",
+    "product": "lerna run product --stream",
+    "develop": "node ./scripts/lerna.js \"npm run develop --parallel\"",
+    "start": "npm run develop"
+  },
+  "dependencies": {
+    "fs-extra": "^8.1.0",
+    "glob": "^7.1.6",
+    "inquirer": "^7.0.4",
+    "lodash": "^4.17.15",
+    "micromatch": "^4.0.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@sentry/webpack-plugin": "^1.10.0",
+    "@types/fs-extra": "^8.1.0",
+    "@types/glob": "^7.1.1",
+    "@types/inquirer": "^6.5.0",
+    "@types/lodash": "^4.14.149",
+    "@types/micromatch": "^4.0.1",
+    "commitizen": "^4.0.3",
+    "concurrently": "^5.1.0",
+    "cpx": "^1.5.0",
+    "cz-conventional-changelog": "^3.0.2",
+    "husky": "^4.0.10",
+    "lint-staged": "^10.0.7",
+    "prettier": "^1.19.1",
+    "lerna": "^3.20.2"
+  },
+  "peerDependencies": {
+    "docsify-cli": "^4.3.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "./*.{md,json,yml}": [
+      "prettier --config ./prettierrc.js --write",
+      "git add"
+    ],
+    "gh-pages/**/*.{html,md}": [
+      "prettier --config ./prettierrc.js --write",
+      "git add"
+    ],
+    "@wxparcel/core/**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml,html}": [
+      "npm run format --prefix @wxparcel/core",
+      "git add"
+    ],
+    "@wxparcel/scripts/**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml,html}": [
+      "npm run format --prefix @wxparcel/scripts",
+      "git add"
+    ],
+    "@wxparcel-config/normal/**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml,html}": [
+      "npm run format --prefix @wxparcel-config/normal",
+      "git add"
+    ],
+    "@wxparcel-loader/babel/**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml,html}": [
+      "npm run format --prefix @wxparcel-loader/babel",
+      "git add"
+    ],
+    "@wxparcel-loader/envify/**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml,html}": [
+      "npm run format --prefix @wxparcel-loader/envify",
+      "git add"
+    ],
+    "@wxparcel-loader/imagemin/**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml,html}": [
+      "npm run format --prefix @wxparcel-loader/imagemin",
+      "git add"
+    ],
+    "@wxparcel-loader/sass/**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml,html}": [
+      "npm run format --prefix @wxparcel-loader/sass",
+      "git add"
+    ],
+    "@wxparcel-loader/uglifyjs/**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml,html}": [
+      "npm run format --prefix @wxparcel-loader/uglifyjs",
+      "git add"
+    ],
+    "@wxparcel-plugin/clean/**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml,html}": [
+      "npm run format --prefix @wxparcel-plugin/clean",
+      "git add"
+    ],
+    "@wxparcel-plugin/devserver/**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml,html}": [
+      "npm run format --prefix @wxparcel-plugin/devserver",
+      "git add"
+    ],
+    "@wxparcel-plugin/spritesmith/**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml,html}": [
+      "npm run format --prefix @wxparcel-plugin/spritesmith",
+      "git add"
+    ],
+    "@wxparcel/core/**/*.{ts,tsx,d.ts}": [
+      "npm run lint:ts --prefix @wxparcel/core",
+      "git add"
+    ],
+    "@wxparcel/scripts/**/*.{ts,tsx,d.ts}": [
+      "npm run lint:ts --prefix @wxparcel/scripts",
+      "git add"
+    ],
+    "@wxparcel-config/normal/**/*.{ts,tsx,d.ts}": [
+      "npm run lint:ts --prefix @wxparcel-config/normal",
+      "git add"
+    ],
+    "@wxparcel-loader/babel/**/*.{ts,tsx,d.ts}": [
+      "npm run lint:ts --prefix @wxparcel-loader/babel",
+      "git add"
+    ],
+    "@wxparcel-loader/envify/**/*.{ts,tsx,d.ts}": [
+      "npm run lint:ts --prefix @wxparcel-loader/envify",
+      "git add"
+    ],
+    "@wxparcel-loader/imagemin/**/*.{ts,tsx,d.ts}": [
+      "npm run lint:ts --prefix @wxparcel-loader/imagemin",
+      "git add"
+    ],
+    "@wxparcel-loader/sass/**/*.{ts,tsx,d.ts}": [
+      "npm run lint:ts --prefix @wxparcel-loader/sass",
+      "git add"
+    ],
+    "@wxparcel-loader/uglifyjs/**/*.{ts,tsx,d.ts}": [
+      "npm run lint:ts --prefix @wxparcel-loader/uglifyjs",
+      "git add"
+    ],
+    "@wxparcel-plugin/clean/**/*.{ts,tsx,d.ts}": [
+      "npm run lint:ts --prefix @wxparcel-plugin/clean",
+      "git add"
+    ],
+    "@wxparcel-plugin/devserver/**/*.{ts,tsx,d.ts}": [
+      "npm run lint:ts --prefix @wxparcel-plugin/devserver",
+      "git add"
+    ],
+    "@wxparcel-plugin/spritesmith/**/*.{ts,tsx,d.ts}": [
+      "npm run lint:ts --prefix @wxparcel-plugin/spritesmith",
+      "git add"
+    ]
+  }
+}

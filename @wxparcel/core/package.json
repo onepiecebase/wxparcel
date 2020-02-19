@@ -1,0 +1,47 @@
+{
+  "name": "wxparcel-core",
+  "version": "2.0.0-alpha.1",
+  "license": "MIT",
+  "main": "./libs/index.js",
+  "scripts": {
+    "prepublishOnly": "npm run format && npm run lint && npm run product",
+    "lint:ts": "eslint --ext .ts ./src --fix",
+    "lint": "npm run lint:ts",
+    "format": "prettier --config ./prettierrc.js --write \"**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml}\"",
+    "develop": "rimraf ./libs && tsc --project ./src --outDir ./libs --declaration --watch",
+    "product": "rimraf ./libs && tsc --project ./src --outDir ./libs --declaration",
+    "start": "npm run develop"
+  },
+  "dependencies": {
+    "chokidar": "^3.3.1",
+    "command-exists": "^1.2.8",
+    "decomment": "^0.9.2",
+    "fs-extra": "^8.1.0",
+    "ip": "^1.1.5",
+    "lodash": "^4.17.15",
+    "minimatch": "^3.0.4",
+    "portscanner": "^2.2.0",
+    "pretty-error": "^2.1.1",
+    "promise-waterfall": "^0.1.0",
+    "strip-comment": "^1.1.3",
+    "strip-css-comments": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/chokidar": "^2.1.3",
+    "@types/command-exists": "^1.2.0",
+    "@types/fs-extra": "^8.1.0",
+    "@types/ip": "^1.1.0",
+    "@types/lodash": "^4.14.149",
+    "@types/minimatch": "^3.0.3",
+    "@types/node": "^13.7.1",
+    "@types/portscanner": "^2.1.0",
+    "@typescript-eslint/eslint-plugin": "^2.16.0",
+    "@typescript-eslint/parser": "^2.16.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.19.1",
+    "rimraf": "^2.6.2",
+    "typescript": "^3.5.3"
+  }
+}

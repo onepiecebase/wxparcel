@@ -1,0 +1,34 @@
+{
+  "name": "wxparcel-loader-imagemin",
+  "version": "2.0.0-alpha.1",
+  "main": "libs/index.js",
+  "license": "MIT",
+  "scripts": {
+    "prepublishOnly": "npm run format && npm run lint && npm run product",
+    "lint:ts": "eslint --ext .ts ./src --fix",
+    "lint": "npm run lint:ts",
+    "format": "prettier --config ./prettierrc.js --write \"**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml}\"",
+    "develop": "rimraf ./libs && tsc --project ./src --outDir ./libs --declaration --watch",
+    "product": "rimraf ./libs && tsc --project ./src --outDir ./libs --declaration",
+    "start": "npm run develop"
+  },
+  "dependencies": {
+    "imagemin": "^7.0.1",
+    "imagemin-jpegtran": "^6.0.0",
+    "imagemin-pngquant": "^8.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.16.0",
+    "@typescript-eslint/parser": "^2.16.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.19.1",
+    "@types/imagemin": "^7.0.0",
+    "@types/imagemin-jpegtran": "^5.0.0",
+    "@types/imagemin-pngquant": "^7.0.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^3.7.5",
+    "wxparcel-core": "2.0.0-alpha.1"
+  }
+}

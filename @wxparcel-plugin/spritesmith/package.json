@@ -1,0 +1,36 @@
+{
+  "name": "wxparcel-plugin-spritesmith",
+  "version": "2.0.0-alpha.1",
+  "main": "libs/index.js",
+  "license": "MIT",
+  "scripts": {
+    "prepublishOnly": "npm run format && npm run lint && npm run product",
+    "lint:ts": "eslint --ext .ts ./src --fix",
+    "lint": "npm run lint:ts",
+    "format": "prettier --config ./prettierrc.js --write \"**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml}\"",
+    "develop": "rimraf ./libs && cpx \"src/**/*{.handlebars,.babelrc}\" ./libs --verbose && concurrently \"tsc --project ./src --outDir ./libs --declaration --watch\" \"cpx 'src/**/{*.handlebars,.babelrc}' ./libs --watch --verbose\"",
+    "product": "rimraf ./libs && cpx \"src/**/*{.handlebars,.babelrc}\" ./libs --verbose && concurrently \"tsc --project ./src --outDir ./libs --declaration\" \"cpx 'src/**/{*.handlebars,.babelrc}' ./libs --verbose\"",
+    "start": "npm run develop"
+  },
+  "dependencies": {
+    "fs-extra": "^8.1.0",
+    "lodash": "^4.17.15",
+    "spritesheet-templates": "^10.5.0",
+    "spritesmith": "^3.4.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.16.0",
+    "@typescript-eslint/parser": "^2.16.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.19.1",
+    "@types/fs-extra": "^8.0.1",
+    "@types/lodash": "^4.14.149",
+    "concurrently": "^5.1.0",
+    "cpx": "^1.5.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^3.7.5",
+    "wxparcel-core": "2.0.0-alpha.1"
+  }
+}

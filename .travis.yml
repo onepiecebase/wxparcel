@@ -1,0 +1,26 @@
+language: node_js
+sudo: false
+node_js:
+  - 12
+
+cache:
+  directories:
+    - node_modules
+
+install:
+  - npm install
+
+script:
+  - npm run product
+
+before_deploy:
+  - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> $HOME/.npmrc 2> /dev/null
+  - npm run product
+
+deploy:
+  - provider: script
+    skip_cleanup: true
+    on:
+      tags: true
+    script:
+      - npm run release
