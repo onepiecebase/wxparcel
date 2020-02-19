@@ -13,7 +13,7 @@
 
 该工作流并非使用其他工作流之上进行封装, 因此可能会出现使用上的小问题, 如果有发现任何问题欢迎到 issue 进行提交
 
-- [使用手册](https://wxparcel.github.io/wxparcel-script)
+- [使用手册](https://onepiecebase.github.io/wxparcel/)
 
 ## 安装使用
 
