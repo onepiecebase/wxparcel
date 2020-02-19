@@ -21,7 +21,7 @@ before_deploy:
 deploy:
   - provider: script
     skip_cleanup: true
-    # on:
-    #   tags: true
+    on:
+      tags: true
     script:
       - yarn ci:deploy
