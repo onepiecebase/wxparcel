@@ -4,7 +4,7 @@ import chalk from 'chalk'
 import pick from 'lodash/pick'
 import program from 'commander'
 import columnify from 'columnify'
-import { Parcel, GlobalOptionManager, GlobalLogger } from 'wxparcel-core'
+import { Parcel, GlobalOptionManager, GlobalLogger, localRequire } from 'wxparcel-core'
 import Project from '../constants/project'
 import babelRequire from '../vendors/babel-register'
 import * as Typings from '../typings'
@@ -42,8 +42,6 @@ function helpAction(): void {
 async function startAction(options: Typings.ParcelCliOptions = {}): Promise<void> {
   try {
     const { env } = options
-    let { config } = options
-
     switch (env) {
       case 'dev':
       case 'develop':
@@ -68,16 +66,15 @@ async function startAction(options: Typings.ParcelCliOptions = {}): Promise<void
       }
     }
 
-    if (!config) {
-      config = path.join(__dirname, '../constants/config.js')
-    }
+    let { config } = options
+    if (config) {
+      if (!path.isAbsolute(config)) {
+        config = path.join(GlobalOptionManager.rootDir, config)
+      }
 
-    if (!path.isAbsolute(config)) {
-      config = path.join(GlobalOptionManager.rootDir, config)
-    }
-
-    if (!fs.existsSync(config)) {
-      throw new Error(`Config file is not found, please ensure config file exists. ${config}`)
+      if (!fs.existsSync(config)) {
+        throw new Error(`Config file is not found, please ensure config file exists. ${config}`)
+      }
     }
 
     options.config = config
@@ -93,30 +90,32 @@ async function startAction(options: Typings.ParcelCliOptions = {}): Promise<void
 // 执行编译流程
 async function run(options: Typings.ParcelCliOptions = {}): Promise<void> {
   const { config: configFile, stats: statsMode } = options
-  if (!configFile) {
-    throw new TypeError('Config file is not provided')
-  }
-
-  if (!fs.existsSync(configFile)) {
-    throw new Error(`Config file is not found, please ensure config file exists. ${configFile}`)
-  }
 
   let parcelOptions: { [key: string]: any } = {}
-  switch (path.extname(configFile)) {
-    case '.js': {
-      if (/\.babel\.js$/.test(configFile)) {
-        parcelOptions = await babelRequire(configFile)
+  if (configFile) {
+    if (!fs.existsSync(configFile)) {
+      throw new Error(`Config file is not found, please ensure config file exists. ${configFile}`)
+    }
+
+    switch (path.extname(configFile)) {
+      case '.js': {
+        if (/\.babel\.js$/.test(configFile)) {
+          parcelOptions = await babelRequire(configFile)
+          break
+        }
+
+        parcelOptions = require(configFile)
+        parcelOptions = parcelOptions.default || parcelOptions
         break
       }
 
-      parcelOptions = require(configFile)
-      parcelOptions = parcelOptions.default || parcelOptions
-      break
+      case '.ts': {
+        break
+      }
     }
-
-    case '.ts': {
-      break
-    }
+  } else {
+    // 如果没有配置, 则使用默认配置
+    parcelOptions = await localRequire('wxparcel-config-normal', process.cwd(), true)
   }
 
   if (options.hasOwnProperty('publicPath')) {
