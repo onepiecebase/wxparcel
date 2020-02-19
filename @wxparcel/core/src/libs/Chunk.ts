@@ -8,7 +8,7 @@ import * as Types from '../constants/chunk-type'
 import * as Typings from '../typings'
 
 interface ChunkUpdateProps extends Omit<Partial<Chunk>, 'dependencies'> {
-  dependencies?: Typings.ParcelChunkDependency[] | string[]
+  dependencies?: Typings.ParcelChunkDependency[] | string[];
 }
 
 /**
