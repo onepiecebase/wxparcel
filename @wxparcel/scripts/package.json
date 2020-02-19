@@ -4,7 +4,7 @@
   "license": "MIT",
   "bin": "./bin/cli",
   "scripts": {
-    "prepublishOnly": "npm run format && npm run lint && npm run product",
+    "prepublishOnly": "npm run product",
     "lint:ts": "eslint --ext .ts ./src --fix",
     "lint": "npm run lint:ts",
     "format": "prettier --config ./prettierrc.js --write \"**/*.{js,jsx,ts,tsx,d.ts,md,json,yml,yaml}\"",
