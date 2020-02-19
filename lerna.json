@@ -3,8 +3,10 @@
   "npmClient": "yarn",
   "command": {
     "publish": {
+      "npmClient": "npm",
       "ignoreChanges": ["ignored-file", "*.md"],
-      "message": "chore(release): publish"
+      "message": "chore(release): publish",
+      "registry": "https://registry.npmjs.org/"
     }
   },
   "packages": ["@wxparcel/*", "@wxparcel-loader/*", "@wxparcel-plugin/*", "@wxparcel-config/*"]
