@@ -149,7 +149,7 @@ async function run(options: Typings.ParcelCliOptions = {}): Promise<void> {
   await GlobalOptionManager.resolve(parcelOptions)
 
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  // cleanConsole()
+  cleanConsole()
 
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   printInfo()
