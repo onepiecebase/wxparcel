@@ -1,6 +1,6 @@
 {
   "name": "wxparcel-create-app",
-  "version": "2.0.0-alpha.7",
+  "version": "2.0.0-alpha.8",
   "license": "MIT",
   "scripts": {
     "develop": "wxparcel-script start --env develop --watch",
@@ -8,7 +8,7 @@
     "start": "npm run develop"
   },
   "devDependencies": {
-    "wxparcel-config-normal": "^2.0.0-alpha.7",
-    "wxparcel-script": "^2.0.0-alpha.7"
+    "wxparcel-config-normal": "^2.0.0-alpha.8",
+    "wxparcel-script": "^2.0.0-alpha.8"
   }
 }
