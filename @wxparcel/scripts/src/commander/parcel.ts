@@ -26,7 +26,9 @@ program
       `\n${MESSAGE_PADDING}${chalk.bold('prod|product|production')} for production`
   )
   .option('--bundle <bundle>', 'generate bundlers with generated bundler')
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   .on('--help', helpAction)
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   .action(startAction)
 
 // Help Action
@@ -39,7 +41,8 @@ function helpAction(): void {
 // Start Action
 async function startAction(options: Typings.ParcelCliOptions = {}): Promise<void> {
   try {
-    let { config, env } = options
+    const { env } = options
+    let { config } = options
 
     switch (env) {
       case 'dev':
@@ -80,6 +83,7 @@ async function startAction(options: Typings.ParcelCliOptions = {}): Promise<void
     options.config = config
     options.watch = options.hasOwnProperty('watch')
 
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     await run(options)
   } catch (error) {
     GlobalLogger.error(error)
@@ -88,7 +92,7 @@ async function startAction(options: Typings.ParcelCliOptions = {}): Promise<void
 
 // 执行编译流程
 async function run(options: Typings.ParcelCliOptions = {}): Promise<void> {
-  let { config: configFile, stats: statsMode } = options
+  const { config: configFile, stats: statsMode } = options
   if (!configFile) {
     throw new TypeError('Config file is not provided')
   }
@@ -136,21 +140,25 @@ async function run(options: Typings.ParcelCliOptions = {}): Promise<void> {
     }
   }
 
-  let proto = Object.getPrototypeOf(parcelOptions)
-  let descriptors = Object.entries(Object.getOwnPropertyDescriptors(proto))
-  let getters = descriptors.filter(([_key, descriptor]) => typeof descriptor.get === 'function').map(([key]) => key)
-  let getterOptions = pick(parcelOptions, getters)
+  const proto = Object.getPrototypeOf(parcelOptions)
+  const descriptors = Object.entries(Object.getOwnPropertyDescriptors(proto))
+  const getters = descriptors.filter(([, descriptor]) => typeof descriptor.get === 'function').map(([key]) => key)
+  const getterOptions = pick(parcelOptions, getters)
 
   parcelOptions = Object.assign({}, getterOptions, parcelOptions, options)
   await GlobalOptionManager.resolve(parcelOptions)
 
-  // cleanConsole()
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  cleanConsole()
+
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   printInfo()
 
   GlobalLogger.print(chalk.cyan.bold('Compiling...'))
 
-  let parcel = new Parcel(GlobalOptionManager)
-  let stats = await parcel.run()
+  const parcel = new Parcel(GlobalOptionManager)
+  const stats = await parcel.run()
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   stats && printStats(stats)
 
   /**
@@ -159,10 +167,11 @@ async function run(options: Typings.ParcelCliOptions = {}): Promise<void> {
   if (options.watch) {
     GlobalOptionManager.watching = true
 
-    let options = {
+    const options = {
       change: (file: string, hasBeenEffect: any) =>
         GlobalLogger.print(`\nFile ${chalk.bold(file)} has been changed, ${hasBeenEffect ? 'compile' : "but it's not be required, ignore"}...\n`),
       unlink: (file: string) => GlobalLogger.print(`\nFile ${chalk.bold(file)} has been deleted, but it will be only delete from cache.\n`),
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       complete: (stats: Typings.ParcelStats) => printStats(stats),
     }
 
@@ -176,18 +185,18 @@ function printStats(stats: Typings.ParcelStats): void {
       const maxWidth = 80
 
       const headingTransform = (heading: string) => {
-        let name = heading.charAt(0).toUpperCase() + heading.slice(1)
+        const name = heading.charAt(0).toUpperCase() + heading.slice(1)
         return chalk.white.bold(name)
       }
 
       const assetsDataTransform = (file: string) => {
-        let { outDir, staticDir } = GlobalOptionManager
+        const { outDir, staticDir } = GlobalOptionManager
         file = file.replace(outDir + path.sep, '').replace(staticDir + path.sep, '')
 
         let dirname = path.dirname(file)
-        let filename = path.basename(file)
+        const filename = path.basename(file)
         if (file.length > maxWidth) {
-          let length = maxWidth - filename.length
+          const length = maxWidth - filename.length
           if (length > 0) {
             dirname = dirname.substr(0, length - 3) + '..'
           }
@@ -202,10 +211,10 @@ function printStats(stats: Typings.ParcelStats): void {
           return '0 Bytes'
         }
 
-        let k = 1024
-        let dm = decimals + 1 || 3
-        let sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-        let i = Math.floor(Math.log(bytes) / Math.log(k))
+        const k = 1024
+        const dm = decimals + 1 || 3
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+        const i = Math.floor(Math.log(bytes) / Math.log(k))
 
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
       }
@@ -236,6 +245,7 @@ function printStats(stats: Typings.ParcelStats): void {
         GlobalLogger.print(`\n${chalk.gray('Spend Time:')} ${chalk.white.bold(stats.spendTime + '')}ms\n`)
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       printInfo()
       break
     }

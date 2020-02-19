@@ -6,7 +6,7 @@ import * as Types from './constants/chunk-type'
 /**
  * 输出结果信息
  */
-export interface ParcelStats extends Array<{ assets: string[]; size: number }> {
+export interface ParcelStats extends Array<{ assets: string[], size: number }> {
   spendTime?: number
 }
 
@@ -116,7 +116,7 @@ export interface ParcelWatchOptions {
   /**
    * 每一次完成回调
    */
-  complete?: (stats: Array<{ assets: string[]; size: number }>) => any
+  complete?: (stats: Array<{ assets: string[], size: number }>) => any
 }
 
 /**
@@ -156,7 +156,7 @@ export interface ParcelOptionRuleLoader {
   /**
    * 加载器路径
    */
-  use: (asset: any, options: ParcelLoaderOptions) => Promise<{ code: string | Buffer; map?: string | object; dependencies?: ParcelChunkDependency[] | string[] }>
+  use: (asset: any, options: ParcelLoaderOptions) => Promise<{ code: string | Buffer, map?: string | object, dependencies?: ParcelChunkDependency[] | string[] }>
 
   /**
    * 标记 Chunk 类型
@@ -184,7 +184,7 @@ export interface ParcelLoaderOptions extends NonFunctionProperties<OptionManager
 export type ParcelLoader = (
   asset: Chunk['metadata'],
   options: ParcelLoaderOptions
-) => Promise<{ code: string | Buffer; map?: string | object; dependencies?: ParcelChunkDependency[] | string[] }>
+) => Promise<{ code: string | Buffer, map?: string | object, dependencies?: ParcelChunkDependency[] | string[] }>
 
 /**
  * 代码片段状态

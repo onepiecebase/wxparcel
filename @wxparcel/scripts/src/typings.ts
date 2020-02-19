@@ -41,6 +41,6 @@ export interface ParcelCliOptions {
 /**
  * 输出结果信息
  */
-export interface ParcelStats extends Array<{ assets: string[]; size: number }> {
+export interface ParcelStats extends Array<{ assets: string[], size: number }> {
   spendTime?: number
 }

@@ -62,7 +62,7 @@ export default class SpritesmithPlugin implements ParcelPlugin {
    * @param options.template 模板路径(相对于 srcDir 路径, 也可以设置成绝对略经)
    */
   public async applyBeforeTransform(assets: Assets, options: NonFunctionProperties<OptionManager>) {
-    let config: SpritesmithOptions & NonFunctionProperties<OptionManager> = defaultsDeep(options, this.options)
+    const config: SpritesmithOptions & NonFunctionProperties<OptionManager> = defaultsDeep(options, this.options)
 
     const spritesmithAsync = promisify(Spritesmith.run.bind(Spritesmith))
     const { srcDir, tmplDir, staticDir, pubPath } = config
@@ -88,19 +88,20 @@ export default class SpritesmithPlugin implements ParcelPlugin {
       return Promise.reject(new Error(`Template ${template} is not found or not be provied`))
     }
 
-    let source = fs.readFileSync(template, 'utf8')
+    const source = fs.readFileSync(template, 'utf8')
     SpritesmithTemplate.addHandlebarsTemplate('spriteScssTemplate', source)
 
     // 寻找所有的图片
     return this.findSprites(directory, /\.(png|jpe?g)$/).then(files => {
       // 生成精灵图
       return spritesmithAsync({ src: files }).then(result => {
-        let { image: buffer, coordinates, properties } = result
+        const { image: buffer, coordinates, properties } = result
 
         // 获取精灵图的属性
-        let sprites = []
+        const sprites = []
         forEach(coordinates, (data, imageFile) => {
-          let name = path.basename(imageFile).replace(path.extname(imageFile), '')
+          const name = path.basename(imageFile).replace(path.extname(imageFile), '')
+          // eslint-disable-next-line @typescript-eslint/camelcase
           let props = { name, total_width: properties.width, total_height: properties.height }
 
           props = Object.assign(props, data)
@@ -108,9 +109,10 @@ export default class SpritesmithPlugin implements ParcelPlugin {
         })
 
         // 拼接哈希值
-        let filename = path.basename(imageFile)
-        let extname = path.extname(imageFile)
-        let basename = filename.replace(extname, '')
+        const filename = path.basename(imageFile)
+        const extname = path.extname(imageFile)
+        const basename = filename.replace(extname, '')
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         imageFile = path.join(imageFile.replace(filename, ''), basename + '.' + gen(buffer) + extname)
 
         /**
@@ -118,20 +120,20 @@ export default class SpritesmithPlugin implements ParcelPlugin {
          * 且反斜杠容易造成转义情况, 例如 \s, 因此这里
          * 需要做一下处理
          */
-        let relativeImagefile = imageFile.replace(staticDir, '')
+        const relativeImagefile = imageFile.replace(staticDir, '')
         let image = trimEnd(pubPath, '/') + '/' + trimStart(relativeImagefile, '/')
         image = image.replace(/\\/g, '/')
 
         // 生成样式文件
-        let spritesheet = Object.assign({ image }, properties)
-        let source = SpritesmithTemplate({ sprites, spritesheet }, { format: 'spriteScssTemplate' })
+        const spritesheet = Object.assign({ image }, properties)
+        const source = SpritesmithTemplate({ sprites, spritesheet }, { format: 'spriteScssTemplate' })
 
         // 写文件
         fs.ensureFileSync(styleFile)
         fs.writeFileSync(styleFile, source)
 
         // 添加资源文件
-        let state = {
+        const state = {
           content: buffer,
           destination: imageFile,
           dependencies: files,
@@ -150,20 +152,20 @@ export default class SpritesmithPlugin implements ParcelPlugin {
    */
   public async findSprites(directory: string, pattern: RegExp): Promise<string[]> {
     let results = []
-    let stat = await fs.stat(directory)
+    const stat = await fs.stat(directory)
 
     if (!stat.isDirectory()) {
       results.push(pattern.test(directory))
       return results
     }
 
-    let files = await fs.readdir(directory)
-    let promises = files.map(async filename => {
-      let file = path.join(directory, filename)
-      let stat = await fs.stat(file)
+    const files = await fs.readdir(directory)
+    const promises = files.map(async filename => {
+      const file = path.join(directory, filename)
+      const stat = await fs.stat(file)
 
       if (stat.isDirectory()) {
-        let sub = await this.findSprites(file, pattern)
+        const sub = await this.findSprites(file, pattern)
         results = results.concat(sub)
         return
       }
