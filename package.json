@@ -21,6 +21,7 @@
     "docs": "cpx './README.md' ./gh-pages",
     "install": "lerna bootstrap",
     "ci:deploy": "lerna publish from-package --yes",
+    "lerna:version": "lerna version --no-git-tag-version --no-push",
     "release": "lerna publish",
     "product": "lerna run product --stream",
     "develop": "node ./scripts/lerna.js \"npm run develop --parallel\"",
