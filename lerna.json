@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0-alpha.2",
+  "version": "2.0.0-alpha.3",
   "npmClient": "yarn",
   "command": {
     "publish": {
@@ -9,5 +9,5 @@
       "registry": "https://registry.npmjs.org/"
     }
   },
-  "packages": ["@wxparcel-config/*", "@wxparcel-loader/*", "@wxparcel-plugin/*", "@wxparcel/*"]
+  "packages": ["@wxparcel-config/*", "@wxparcel-create/*", "@wxparcel-loader/*", "@wxparcel-plugin/*", "@wxparcel/*"]
 }

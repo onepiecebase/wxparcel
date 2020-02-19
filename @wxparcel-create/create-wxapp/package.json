@@ -1,8 +1,10 @@
 {
-  "name": "wxparcel-plugin-clean",
+  "name": "create-wxparcel-app",
   "version": "2.0.0-alpha.3",
-  "main": "libs/index.js",
   "license": "MIT",
+  "bin": {
+    "create-wxparcel-app": "./bin/cli"
+  },
   "scripts": {
     "prepublishOnly": "npm run format && npm run lint && npm run product",
     "lint:ts": "eslint --ext .ts ./src --fix",
@@ -13,20 +15,28 @@
     "start": "npm run develop"
   },
   "dependencies": {
+    "chalk": "^3.0.0",
+    "command-exists": "^1.2.8",
+    "commander": "^4.1.0",
     "fs-extra": "^8.1.0",
-    "lodash": "^4.17.15"
+    "inquirer": "^7.0.3",
+    "pretty-error": "^2.1.1",
+    "tar": "^5.0.5"
   },
   "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/commander": "^2.12.2",
     "@types/fs-extra": "^8.0.1",
-    "@types/lodash": "^4.14.149",
+    "@types/inquirer": "^6.5.0",
+    "@types/tar": "^4.0.3",
     "@typescript-eslint/eslint-plugin": "^2.16.0",
     "@typescript-eslint/parser": "^2.16.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
     "prettier": "^1.19.1",
-    "rimraf": "^3.0.2",
-    "typescript": "^3.7.5",
-    "wxparcel-core": "^2.0.0-alpha.3"
-  }
+    "rimraf": "^2.6.2",
+    "typescript": "^3.5.3"
+  },
+  "gitHead": "127852b4f80a53ad5ec5f568c6df834a3860cbe2"
 }

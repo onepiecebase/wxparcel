@@ -3,6 +3,7 @@ import fs from 'fs-extra'
 import * as path from 'path'
 import portscanner from 'portscanner'
 import mapValues from 'lodash/mapValues'
+import isEmpty from 'lodash/isEmpty'
 import * as Typings from '../typings'
 
 /**
@@ -141,7 +142,7 @@ export default class OptionManager {
   constructor(options: Typings.ParcelOptions = {}) {
     this.rootDir = process.cwd()
     this.execDir = path.join(__dirname, '../../')
-    this.resolve(options)
+    !isEmpty(options) && this.resolve(options)
   }
 
   /**

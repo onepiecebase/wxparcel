@@ -1,6 +1,6 @@
 {
   "name": "wxparcel-plugin-spritesmith",
-  "version": "2.0.0-alpha.2",
+  "version": "2.0.0-alpha.3",
   "main": "libs/index.js",
   "license": "MIT",
   "scripts": {
@@ -31,6 +31,6 @@
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
     "typescript": "^3.7.5",
-    "wxparcel-core": "^2.0.0-alpha.2"
+    "wxparcel-core": "^2.0.0-alpha.3"
   }
 }

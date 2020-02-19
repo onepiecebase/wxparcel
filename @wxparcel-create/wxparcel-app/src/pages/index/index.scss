@@ -1,0 +1,32 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.section {
+  width: 100%;
+  background-color: #f7f9f9;
+}
+
+.spinner {
+  display: block;
+  padding: 80rpx 0 0;
+  width: 100%;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: -40rpx;
+  padding: 0 0 40rpx 0;
+  width: 100%;
+  text-align: center;
+  font-size: 60rpx;
+  color: #777;
+}
