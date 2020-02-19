@@ -4,6 +4,7 @@ node_js:
   - 12
 
 cache:
+  yarn: true
   directories:
     - node_modules
 
@@ -20,7 +21,7 @@ before_deploy:
 deploy:
   - provider: script
     skip_cleanup: true
-    # on:
-    #   tags: true
+    on:
+      tags: true
     script:
-      - npm run release
+      - npm run ci:deploy
