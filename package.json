@@ -20,7 +20,7 @@
     "docs:server": "concurrently \"cpx './README.md' ./gh-pages --watch\" \"docsify serve ./gh-pages\"",
     "docs": "cpx './README.md' ./gh-pages",
     "install": "lerna bootstrap",
-    "release": "lerna publish from-git --yes --dist-tag alpha",
+    "release": "lerna publish from-git --yes --pre-dist-tag alpha",
     "product": "lerna run product --stream",
     "develop": "node ./scripts/lerna.js \"npm run develop --parallel\"",
     "start": "npm run develop"
