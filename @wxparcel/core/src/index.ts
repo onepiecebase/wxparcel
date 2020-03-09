@@ -25,18 +25,14 @@ export { default as GlobalParser } from './services/parser'
 export { default as GlobalResolver } from './services/resolver'
 
 // Constants
-export { BUNDLE, BUNDLER, SCATTER, ENTRY } from './constants/chunk-type'
+export * from './constants/chunk-type'
 
 // Utils
-export { escapeRegExp, replacement, gen, genFileSync, stripBOM, inMatches, isSameOutPath } from './share/utils'
-
-export { localRequire, localResolve, resolve, resolvePaths, resolveTruthModuleName } from './share/module'
-
-export { installDependencies, installPeerDependencies, determinePackageManager, detectSupportYarn, fetchNpmLinks } from './share/pm'
-
-export { onexit, spawn, kill, pipeSpawn } from './share/process'
-
-export { getConsumer, getSourceNode } from './share/source-map'
+export * from './share/utils'
+export * from './share/module'
+export * from './share/pm'
+export * from './share/process'
+export * from './share/source-map'
 
 // Typings
 export * from './typings'

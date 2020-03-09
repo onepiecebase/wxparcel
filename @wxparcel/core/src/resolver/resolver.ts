@@ -90,11 +90,8 @@ export default class Resolver {
       code = code.replace(all, '')
 
       const dependency = convertDependency(validRequired)
-      if (dependency === false) {
-        break
-      }
-
       const props = { file: this.file, dependency, required: validRequired }
+
       if (!fs.existsSync(dependency as string)) {
         throw new Error(`Cannot found module ${validRequired} in ${this.file}`)
       }
@@ -117,9 +114,8 @@ export default class Resolver {
    * @param relativePath 相对引用文件路径
    * @returns 依赖路径
    */
-  public convertDependency(required: string, relativePath: string = path.dirname(this.file)): string | boolean {
+  public convertDependency(required: string, relativePath: string = path.dirname(this.file)): string {
     const { srcDir, rootDir } = this.options
-
     switch (required.charAt(0)) {
       case '@':
         required = required.substr(1)

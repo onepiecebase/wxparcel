@@ -28,7 +28,7 @@ export default class JSResolver extends Resolver {
       throw new Error(`Some error occur when strip comments in ${this.file}\n${error.message}`)
     }
 
-    ;[source, dependencies] = this.revise([source, dependencies], [IMPORT_REGEXP, REQUIRE_REGEXP], {
+    ;[source, dependencies] = this.revise([source, dependencies], [REQUIRE_REGEXP, IMPORT_REGEXP], {
       type: BUNDLE,
       convertDependency: this.convertRelative.bind(this),
       convertDestination: this.convertDestination.bind(this),

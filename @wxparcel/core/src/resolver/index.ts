@@ -7,7 +7,7 @@ import WXSResolver from './wxs-resolver'
 import WXMLResolver from './wxml-resolver'
 import WXSSResolver from './wxss-resolver'
 import OptionManager from '../libs/OptionManager'
-import Chunk from '../libs/Chunk'
+import * as Typings from '../typings'
 
 /**
  * 解析器
@@ -22,7 +22,7 @@ export default class Resolver {
   /**
    * 解析器集合
    */
-  public resolvers: Array<{ regexp: RegExp; resolver: { new (asset: Chunk['metadata'], options: OptionManager): BaseResolver } }>
+  public resolvers: Array<{ regexp: RegExp; resolver: { new (asset: Typings.ChunkState, options: OptionManager): BaseResolver } }>
 
   constructor(options: OptionManager) {
     this.options = options
@@ -57,7 +57,7 @@ export default class Resolver {
    * @param options 配置
    * @returns 新的 Chunk 信息
    */
-  public resolve(asset: Chunk['metadata'], options: OptionManager = this.options) {
+  public resolve(asset: Typings.ChunkState, options: OptionManager = this.options) {
     const { file, content, rule } = asset
     const extname = rule.extname || '.' + path.extname(file)
 
