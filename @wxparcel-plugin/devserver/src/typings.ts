@@ -4,5 +4,5 @@ export interface DevServerOptions extends ServeStaticOptions {
   /**
    * 端口
    */
-  port?: number
+  port?: number;
 }

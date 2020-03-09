@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 import template from 'lodash/template'
 import defaultsDeep from 'lodash/defaultsDeep'
-import { OptionManager, ParcelPlugin } from 'wxparcel-core'
+import { OptionManager, Plugin } from 'wxparcel-core'
 import * as Typings from './typings'
 
 const remove = fs.remove.bind(fs)
@@ -9,7 +9,7 @@ const remove = fs.remove.bind(fs)
 /**
  * 清除插件
  */
-export default class CleanPlugin implements ParcelPlugin {
+export default class CleanPlugin implements Plugin {
   /**
    * 配置
    */

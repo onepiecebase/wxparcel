@@ -1,5 +1,5 @@
 import envifyReplace from 'loose-envify/replace'
-import { ParcelLoader } from 'wxparcel-core'
+import { Loader, ChunkState } from 'wxparcel-core'
 import * as Typings from './typings'
 
 /**
@@ -7,7 +7,7 @@ import * as Typings from './typings'
  * @param asset 资源对象
  * @param options 配置
  */
-export const EnvifyLoader: ParcelLoader = (asset, options: Typings.EnvifyOptions) => {
+export const EnvifyLoader: Loader = (asset: ChunkState, options: Typings.EnvifyOptions) => {
   return new Promise(resolve => {
     let { content } = asset
     const { options: envifyOptions } = options

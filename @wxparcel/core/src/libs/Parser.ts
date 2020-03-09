@@ -83,7 +83,7 @@ export default class Parser {
    * @param file 文件
    * @param chunkOptions 配置
    */
-  public async convert(file: string | { file: string }, chunkOptions: Typings.ParcelChunkState = {}): Promise<Chunk> {
+  public async convert(file: string | { file: string }, chunkOptions: Typings.ChunkState = {}): Promise<Chunk> {
     if (typeof file === 'object') {
       chunkOptions = isEmpty(chunkOptions) ? omit(file, 'file') : chunkOptions
       file = file.file
@@ -124,7 +124,7 @@ export default class Parser {
    * @param rule 规则
    * @param loeaders 加载器
    */
-  public async transform(chunk: Chunk, rule: Typings.ParcelOptionRule, loaders: Typings.ParcelOptionRuleLoader[]): Promise<Chunk> {
+  public async transform(chunk: Chunk, rule: Typings.RuleOption, loaders: Typings.RuleOptionLoader[]): Promise<Chunk> {
     const { file } = chunk
 
     /**
@@ -181,7 +181,7 @@ export default class Parser {
         return Promise.reject(new Error('Params use is not provided from loader'))
       }
 
-      let transform: Typings.ParcelLoader = loader.use as any
+      let transform: Typings.Loader = loader.use as any
       if (typeof transform === 'string') {
         /**
          * 读取模块, 若模块为 es6 模块则通过 default 形式去获取.
@@ -278,7 +278,7 @@ export default class Parser {
    * @param rules 规则
    * @returns 匹配到的规则
    */
-  public matchRule(file: string, rules: Typings.ParcelOptionRule[] = []) {
+  public matchRule(file: string, rules: Typings.RuleOption[] = []) {
     const handleFind = rule => {
       const { test: pattern, ignore } = rule
       if (pattern.test(file)) {

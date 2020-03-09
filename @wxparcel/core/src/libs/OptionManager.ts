@@ -9,11 +9,11 @@ import * as Typings from '../typings'
 /**
  * 配置管理器
  */
-export default class OptionManager {
+export default class OptionManager implements Typings.Option {
   /**
    * 空闲端口
    */
-  private idlePort: number
+  public idlePort: number
 
   /**
    * 根目录
@@ -78,7 +78,7 @@ export default class OptionManager {
   /**
    * 编译规则
    */
-  public rules: Typings.ParcelOptionRule[]
+  public rules: Typings.RuleOption[]
 
   /**
    * 是否生成 sourceMap
@@ -205,7 +205,7 @@ export default class OptionManager {
    * @param rules 规则集合
    * @returns 是否通过验证
    */
-  public checkRules(rules: Typings.ParcelOptionRule[] = []): true | string {
+  public checkRules(rules: Typings.RuleOption[] = []): true | string {
     for (let i = rules.length; i--; ) {
       const rule = rules[i]
       const genMessage = () => {
@@ -308,7 +308,7 @@ export default class OptionManager {
    * @param options 配置
    * @returns 返回该配置
    */
-  public connect<T extends object, A extends Typings.NonFunctionProperties<OptionManager>>(options: T): T & { readonly [key in keyof A]: A[key] } {
+  public connect<T extends object, A extends Typings.Option>(options: T): T & { readonly [key in keyof A]: A[key] } {
     const getter = mapValues(this, (_, name) => ({ get: () => this[name] }))
 
     options = Object.assign({}, options)

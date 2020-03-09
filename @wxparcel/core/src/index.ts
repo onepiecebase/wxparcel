@@ -39,22 +39,4 @@ export { onexit, spawn, kill, pipeSpawn } from './share/process'
 export { getConsumer, getSourceNode } from './share/source-map'
 
 // Typings
-export {
-  ParcelOptions,
-  ParcelWatchOptions,
-  ParcelOptionRule,
-  ParcelOptionRuleLoader,
-  ParcelLoaderOptions,
-  ParcelLoader,
-  ParcelChunkState,
-  ParcelPlugin,
-  ParcelChunkDependency,
-  PMInstallOptions,
-  ProcessStdout,
-  WXProjectConfig,
-  WXPageConfig,
-  WXPluginConfig,
-  ValueOf,
-  NonFunctionPropertyNames,
-  NonFunctionProperties,
-} from './typings'
+export * from './typings'

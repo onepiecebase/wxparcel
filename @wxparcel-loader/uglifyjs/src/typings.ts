@@ -1,6 +1,6 @@
+import { ParcelOptions } from 'wxparcel-core'
 import { MinifyOptions } from 'uglify-es'
-import { ParcelLoaderOptions } from 'wxparcel-core'
 
-export interface UglifyjsOptions extends ParcelLoaderOptions {
-  options: MinifyOptions
+export interface UglifyjsOptions extends ParcelOptions {
+  options: MinifyOptions;
 }

@@ -8,7 +8,7 @@ import trimEnd from 'lodash/trimEnd'
 import defaultsDeep from 'lodash/defaultsDeep'
 import Spritesmith from 'spritesmith'
 import SpritesmithTemplate from 'spritesheet-templates'
-import { OptionManager, Assets, ParcelPlugin, NonFunctionProperties } from 'wxparcel-core'
+import { OptionManager, Assets, Plugin, NonFunctionProperties } from 'wxparcel-core'
 
 const directory = 'sprites'
 const imageFile = 'sprites/sprite.png'
@@ -19,22 +19,22 @@ export interface SpritesmithOptions {
   /**
    * 图片根目录
    */
-  directory?: string
+  directory?: string;
 
   /**
    * 生成精灵图存放位置
    */
-  imageFile?: string
+  imageFile?: string;
 
   /**
    * 生成样式文件存放位置
    */
-  styleFile?: string
+  styleFile?: string;
 
   /**
    * 样式文件模板位置
    */
-  template?: string
+  template?: string;
 }
 
 /**
@@ -43,7 +43,7 @@ export interface SpritesmithOptions {
  * @export
  * @class SpritesmithPlugin
  */
-export default class SpritesmithPlugin implements ParcelPlugin {
+export default class SpritesmithPlugin implements Plugin {
   /**
    * 配置
    */

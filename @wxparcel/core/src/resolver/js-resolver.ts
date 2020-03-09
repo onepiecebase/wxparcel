@@ -20,7 +20,7 @@ export default class JSResolver extends Resolver {
    */
   public resolve() {
     let source = this.source.toString()
-    let dependencies: Typings.ParcelChunkDependency[] = []
+    let dependencies: Typings.ChunkDependency[] = []
 
     try {
       source = stripComments(source)

@@ -84,7 +84,7 @@ export default class JSONResolver extends Resolver {
     files = flatten(files)
     files = uniq(files).concat(tabImageFiles, confDependedFiles)
 
-    const dependencies: Typings.ParcelChunkDependency[] = files.map(dependency => {
+    const dependencies: Typings.ChunkDependency[] = files.map(dependency => {
       const destination = this.convertDestination(dependency)
       return { file: this.file, dependency, destination, required: '' }
     })

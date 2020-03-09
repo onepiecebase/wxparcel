@@ -46,7 +46,7 @@ export default class Assets {
    * @param file 文件名
    * @param state 状态
    */
-  public add(file: string, state: Typings.ParcelChunkState = {}): Chunk {
+  public add(file: string, state: Typings.ChunkState = {}): Chunk {
     const chunk = new Chunk(file, state, this.options)
     this.chunks.push(chunk)
     return chunk

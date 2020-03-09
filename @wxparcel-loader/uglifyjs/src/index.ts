@@ -1,5 +1,5 @@
 import defaultsDeep from 'lodash/defaultsDeep'
-import { ParcelLoader } from 'wxparcel-core'
+import { Loader, ChunkState } from 'wxparcel-core'
 import UglifyJS from 'uglify-es'
 import * as Typings from './typings'
 
@@ -8,7 +8,7 @@ import * as Typings from './typings'
  * @param asset 资源对象
  * @param options 配置, 可参考 require('uglify-js').minify 中的配置: https://github.com/mishoo/UglifyJS#usage
  */
-const UglifyjsLoader: ParcelLoader = (asset, options: Typings.UglifyjsOptions) => {
+const UglifyjsLoader: Loader = (asset: ChunkState, options: Typings.UglifyjsOptions) => {
   return new Promise((resolve, reject) => {
     const { file, sourceMap } = asset
     const { sourceMap: useSourceMap } = options

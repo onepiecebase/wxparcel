@@ -4,12 +4,7 @@ import pick from 'lodash/pick'
 import cloneDeep from 'lodash/cloneDeep'
 import isPlainObject from 'lodash/isPlainObject'
 import OptionManager from './OptionManager'
-import * as Types from '../constants/chunk-type'
 import * as Typings from '../typings'
-
-interface ChunkUpdateProps extends Omit<Partial<Chunk>, 'dependencies'> {
-  dependencies?: Typings.ParcelChunkDependency[] | string[];
-}
 
 /**
  * 代码片段
@@ -35,12 +30,12 @@ export default class Chunk {
   /**
    * 分片类型
    */
-  public type: Typings.ValueOf<typeof Types>
+  public type: Typings.ValueOf<Typings.ChunkTypes>
 
   /**
    * 依赖集合
    */
-  public dependencies: Typings.ParcelChunkDependency[]
+  public dependencies: Typings.ChunkDependency[]
 
   /**
    * 代码内容
@@ -57,12 +52,12 @@ export default class Chunk {
    * 重置 rule 值再赋值
    * 下面 rule 需要默认值来使用
    */
-  public rule: Typings.ParcelOptionRule
+  public rule: Typings.RuleOption
 
   /**
    * 代码片段状态
    */
-  public state: Typings.ParcelChunkState
+  public state: Typings.ChunkState
 
   /**
    * 保存的目的地路径
@@ -73,12 +68,13 @@ export default class Chunk {
    * 原始数据
    * @readonly
    */
-  public get metadata(): Pick<this, 'file' | 'type' | 'dependencies' | 'content' | 'sourceMap' | 'rule' | 'destination'> {
-    const metadata = pick(this, ['file', 'type', 'dependencies', 'content', 'sourceMap', 'rule', 'destination'])
+  public get metadata(): Typings.ChunkState {
+    const names = ['file', 'type', 'dependencies', 'content', 'sourceMap', 'rule', 'destination']
+    const metadata = pick(this, names)
     return cloneDeep(metadata)
   }
 
-  constructor(file: string, state: Typings.ParcelChunkState = {}, options: OptionManager) {
+  constructor(file: string, state: Typings.ChunkState = {}, options: OptionManager) {
     if (!file) {
       throw new TypeError('File is invalid or not be provied')
     }
@@ -96,7 +92,7 @@ export default class Chunk {
     this.dependencies = []
 
     if (Array.isArray(state.dependencies) && state.dependencies.length > 0) {
-      state.dependencies.forEach((dependency: Typings.ParcelChunkDependency | string) => {
+      state.dependencies.forEach((dependency: Typings.ChunkDependency | string) => {
         if (typeof dependency === 'string') {
           this.dependencies.push({ dependency })
         }
@@ -126,39 +122,49 @@ export default class Chunk {
     let { rule } = this.state
 
     this.rule = rule = rule || ({} as any)
-    this.destination = destination || ''
+    this.destination = Array.isArray(destination) ? destination : destination ? [destination] : []
 
-    if (destination) {
-      if (rule.extname) {
-        const dirname = path.dirname(destination)
-        let filename = path.basename(destination)
-        const extname = path.extname(file)
+    if (Array.isArray(this.destination)) {
+      const destinations = this.destination
+      for (let i = 0; i < destinations.length; i++) {
+        const destination = destinations[i]
 
-        filename = filename.replace(extname, rule.extname)
-        this.destination = path.join(dirname, filename)
-      } else {
-        this.destination = destination
+        if (destination) {
+          if (rule.extname) {
+            const dirname = path.dirname(destination)
+
+            let filename = path.basename(destination)
+            const extname = path.extname(file)
+
+            filename = filename.replace(extname, rule.extname)
+            destinations[i] = path.join(dirname, filename)
+            continue
+          }
+
+          destinations[i] = destination
+          continue
+        }
+
+        /**
+         * windows 下 path 存在多个反斜杠
+         * 因此需要 escape 才能进行 search
+         * 这里可以直接使用 indexOf 进行查询
+         */
+        const relativePath =
+          file.indexOf(srcDir) !== -1
+            ? path.dirname(file).replace(srcDir, '')
+            : /[\\/]node_modules[\\/]/.test(file)
+            ? path.dirname(file).replace(path.join(rootDir, 'node_modules'), npmDir)
+            : path.dirname(file).replace(rootDir, '')
+
+        let filename = path.basename(file)
+        if (rule.extname) {
+          const extname = path.extname(file)
+          filename = filename.replace(extname, rule.extname)
+        }
+
+        destinations[i] = path.join(rule.type === 'static' ? staticDir : outDir, relativePath, filename)
       }
-    } else {
-      /**
-       * windows 下 path 存在多个反斜杠
-       * 因此需要 escape 才能进行 search
-       * 这里可以直接使用 indexOf 进行查询
-       */
-      const relativePath =
-        file.indexOf(srcDir) !== -1
-          ? path.dirname(file).replace(srcDir, '')
-          : /[\\/]node_modules[\\/]/.test(file)
-          ? path.dirname(file).replace(path.join(rootDir, 'node_modules'), npmDir)
-          : path.dirname(file).replace(rootDir, '')
-
-      let filename = path.basename(file)
-      if (rule.extname) {
-        const extname = path.extname(file)
-        filename = filename.replace(extname, rule.extname)
-      }
-
-      this.destination = path.join(rule.type === 'static' ? staticDir : outDir, relativePath, filename)
     }
   }
 
@@ -166,7 +172,7 @@ export default class Chunk {
    * 更新状态
    * @param props 属性
    */
-  public update(props: ChunkUpdateProps): void {
+  public update(props: Typings.ChunkUpdateProps): void {
     const { sourceMap: useSourceMap } = this.options
     if (props.hasOwnProperty('file') && typeof props.file === 'string') {
       this.file = props.file
@@ -225,7 +231,7 @@ export default class Chunk {
    * 释放
    * @returns metadata 元数据
    */
-  public flush(): this['metadata'] {
+  public flush() {
     this.flushed = true
     return this.metadata
   }

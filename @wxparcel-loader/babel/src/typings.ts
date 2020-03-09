@@ -1,6 +1,6 @@
-import { ParcelLoaderOptions } from 'wxparcel-core'
+import { LoaderOption } from 'wxparcel-core'
 import { TransformOptions } from '@babel/core'
 
-export interface BabelOptions extends ParcelLoaderOptions {
-  options: TransformOptions
+export interface BabelOptions extends LoaderOption {
+  options: TransformOptions;
 }

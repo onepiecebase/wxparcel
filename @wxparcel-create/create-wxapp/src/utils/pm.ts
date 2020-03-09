@@ -7,7 +7,7 @@ import { cwdPath } from '../constants/conf'
 import * as Typings from '../typings'
 
 export interface InstallOptions {
-  packageManager?: Typings.PackageManager
+  packageManager?: Typings.PackageManager;
 }
 
 /**

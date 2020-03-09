@@ -1,4 +1,4 @@
-import { ParcelLoader } from 'wxparcel-core'
+import { Loader, ChunkState } from 'wxparcel-core'
 import imagemin from 'imagemin'
 import imageminJpegtran from 'imagemin-jpegtran'
 import imageminPngquant from 'imagemin-pngquant'
@@ -9,7 +9,7 @@ import * as Typings from './typings'
  * @param asset 资源对象
  * @param options 配置
  */
-export const ImageMinLoader: ParcelLoader = async (asset, options: Typings.ImageMinOptions) => {
+export const ImageMinLoader: Loader = async (asset: ChunkState, options: Typings.ImageMinOptions) => {
   const { content } = asset
   const { options: loaderOptions } = options
 

@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { transform } from '@babel/core'
-import { ParcelLoader } from 'wxparcel-core'
+import { Loader, ChunkState } from 'wxparcel-core'
 import * as Typings from './typings'
 
 /**
@@ -9,7 +9,7 @@ import * as Typings from './typings'
  * @param asset 资源对象
  * @param options 配置, 配置参考 require('@babel/core').transform 中的配置, https://babeljs.io/docs/en/next/babel-core.html
  */
-export const BabelLoader: ParcelLoader = async (asset, options: Typings.BabelOptions) => {
+export const BabelLoader: Loader = async (asset: ChunkState, options: Typings.BabelOptions) => {
   return new Promise(resolve => {
     const file = asset.file
     const useSourceMap = options.sourceMap

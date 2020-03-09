@@ -3,13 +3,13 @@ import ipPortRegex from 'ip-port-regex'
 import Finalhandler from 'finalhandler'
 import ServeStatic from 'serve-static'
 import defaultsDeep from 'lodash/defaultsDeep'
-import { OptionManager, ParcelPlugin, NonFunctionProperties } from 'wxparcel-core'
+import { OptionManager, Plugin, NonFunctionProperties } from 'wxparcel-core'
 import * as Typings from './typings'
 
 /**
  * 静态服务插件
  */
-export default class DevServerPlugin implements ParcelPlugin {
+export default class DevServerPlugin implements Plugin {
   /**
    * 配置
    */

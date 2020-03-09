@@ -1,4 +1,4 @@
-import { ParcelLoader } from 'wxparcel-core'
+import { Loader, ChunkState } from 'wxparcel-core'
 import { render, SassError, Result as SassResult } from 'node-sass'
 import * as Typings from './typings'
 
@@ -7,7 +7,7 @@ import * as Typings from './typings'
  * @param asset 资源对象
  * @param options 配置, 可参考 require('node-sass').redner 中的配置: https://github.com/sass/node-sass#options
  */
-export const SassLoader: ParcelLoader = (asset, options: Typings.SassOptions) => {
+export const SassLoader: Loader = (asset: ChunkState, options: Typings.SassOptions) => {
   return new Promise((resolve, reject) => {
     const { content } = asset
     const { tmplDir, rootDir, srcDir } = options

@@ -1,7 +1,7 @@
-import { ParcelLoaderOptions } from 'wxparcel-core'
+import { LoaderOption } from 'wxparcel-core'
 
-export interface EnvifyOptions extends ParcelLoaderOptions {
+export interface EnvifyOptions extends LoaderOption {
   options: {
-    env: any
-  }
+    env: any;
+  };
 }

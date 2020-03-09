@@ -8,10 +8,10 @@ import UglifyJSLoader from 'wxparcel-loader-uglifyjs'
 import SassLoader from 'wxparcel-loader-sass'
 import CleanPlugin from 'wxparcel-plugin-clean'
 import DevServerPlugin from 'wxparcel-plugin-devserver'
-import { BUNDLER, SCATTER, ParcelOptionRule, ParcelPlugin } from 'wxparcel-core'
+import { BUNDLER, SCATTER, RuleOption, Plugin } from 'wxparcel-core'
 
 // JS 规则
-const jsRules: ParcelOptionRule[] = [
+const jsRules: RuleOption[] = [
   {
     test: /\.js$/,
     extname: '.js',
@@ -32,7 +32,7 @@ const jsRules: ParcelOptionRule[] = [
 ]
 
 // wxss 规则
-const wxssRules: ParcelOptionRule[] = [
+const wxssRules: RuleOption[] = [
   {
     test: /\.scss$/,
     extname: '.wxss',
@@ -46,7 +46,7 @@ const wxssRules: ParcelOptionRule[] = [
 ]
 
 // 插件配置
-const plugins: ParcelPlugin[] = [
+const plugins: Plugin[] = [
   new CleanPlugin({
     alisas: ['outDir', 'staticDir', 'tmplDir'],
   }),
@@ -112,7 +112,7 @@ class Config {
    * @param name 规则名称
    * @param callback 回调
    */
-  public setRule(name: string, callback: (rules: ParcelOptionRule[]) => ParcelOptionRule[]): void {
+  public setRule(name: string, callback: (rules: RuleOption[]) => RuleOption[]): void {
     switch (name) {
       case 'js': {
         const rules = jsRules || []
@@ -134,7 +134,7 @@ class Config {
    * 添加插件
    * @param plugin 插件
    */
-  public addPlugin(plugin: ParcelPlugin): void {
+  public addPlugin(plugin: Plugin): void {
     plugins.push(plugin)
   }
 
@@ -142,7 +142,7 @@ class Config {
    * 删除插件
    * @param plugin 插件
    */
-  public delPlugin(plugin: { new (): ParcelPlugin } | ParcelPlugin): void {
+  public delPlugin(plugin: { new (): Plugin } | Plugin): void {
     const index = plugins.findIndex(item => (typeof plugin === 'function' ? item === plugin : item.constructor === plugin.constructor))
     index !== -1 && plugins.splice(index, 1)
   }

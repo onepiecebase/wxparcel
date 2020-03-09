@@ -2,8 +2,8 @@ import fs from 'fs-extra'
 import path from 'path'
 
 interface PackageJson {
-  name: string
-  version: string
+  name: string;
+  version: string;
 }
 
 const packageJson: PackageJson = fs.readJSONSync(path.join(__dirname, '../../package.json'))

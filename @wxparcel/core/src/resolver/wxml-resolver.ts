@@ -16,7 +16,7 @@ export default class WXMLResolver extends Resolver {
    */
   public resolve() {
     let source = this.source.toString()
-    let dependencies: Typings.ParcelChunkDependency[] = []
+    let dependencies: Typings.ChunkDependency[] = []
 
     source = stripComments(source)
     ;[source, dependencies] = this.revise([source, dependencies], SRC_REGEXP, {
