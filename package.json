@@ -24,7 +24,7 @@
     "lerna:version": "lerna version --no-git-tag-version --no-push",
     "release": "lerna publish",
     "product": "lerna run product --stream",
-    "develop": "node ./scripts/lerna.js \"npm run develop --parallel\"",
+    "develop": "lerna exec \"tsc --project ./src --outDir ./libs --declaration --watch\" --parallel",
     "start": "npm run develop"
   },
   "dependencies": {

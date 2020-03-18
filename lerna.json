@@ -2,6 +2,9 @@
   "version": "2.0.0-alpha.9",
   "npmClient": "yarn",
   "command": {
+    "exec": {
+      "ignore": ["wxparcel-create-app"]
+    },
     "publish": {
       "npmClient": "npm",
       "ignoreChanges": ["ignored-file", "*.md"],
