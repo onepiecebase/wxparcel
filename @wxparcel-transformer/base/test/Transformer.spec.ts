@@ -1,6 +1,7 @@
 import path from 'path'
 import { expect } from 'chai'
-import Transformer from '@/index'
+import { OptionManager } from 'wxparcel-core'
+import Transformer from '@/Transformer'
 
 const file = __filename
 const source = Buffer.from('something...')
@@ -73,5 +74,36 @@ describe('测试 Transformer', () => {
     const matches = await transformer.findFileByAlias(required, alias)
     expect(matches).to.be.a('string')
     expect(matches).to.equal(__filename)
+  })
+
+  it('拥有 convertOutput 方法', () => {
+    const options = new OptionManager()
+    const transformer = new Transformer(params, options)
+    const folder = path.join(__dirname, '../fake')
+    const file = path.join(options.srcDir, 'index.ts')
+    const output = path.join(folder, path.basename(file))
+    const destination = transformer.convertOutput(file, folder)
+
+    expect(destination).to.equal(output)
+  })
+
+  it('拥有 convertApp 方法', () => {
+    const options = new OptionManager()
+    const transformer = new Transformer(params, options)
+    const file = path.join(options.srcDir, 'index.ts')
+    const output = path.join(options.outDir, path.basename(file))
+    const destination = transformer.convertApp(file)
+
+    expect(destination).to.equal(output)
+  })
+
+  it('拥有 convertNPM 方法', () => {
+    const options = new OptionManager()
+    const transformer = new Transformer(params, options)
+    const file = path.join(__dirname, '../node_modules/chai/index.ts')
+    const output = path.join(options.npmDir, 'chai/index.ts')
+    const destination = transformer.convertNPM(file)
+
+    expect(destination).to.equal(output)
   })
 })
