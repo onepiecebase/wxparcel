@@ -12,5 +12,5 @@
       "registry": "https://registry.npmjs.org/"
     }
   },
-  "packages": ["@wxparcel-config/*", "@wxparcel-create/*", "@wxparcel-loader/*", "@wxparcel-plugin/*", "@wxparcel/*"]
+  "packages": ["@wxparcel/*", "@wxparcel-transformer/*", "@wxparcel-loader/*", "@wxparcel-plugin/*", "@wxparcel-config/*", "@wxparcel-create/*"]
 }
