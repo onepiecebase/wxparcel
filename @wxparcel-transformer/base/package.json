@@ -16,17 +16,17 @@
     "start": "npm run develop"
   },
   "dependencies": {
-    "chai": "^4.2.0",
     "glob": "^7.1.6",
     "minimatch": "^3.0.4",
-    "ts-mocha": "^7.0.0",
     "wxparcel-core": "^2.0.0-alpha.9"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "ts-mocha": "^7.0.0",
     "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
     "@types/glob": "^7.1.1",
     "@types/minimatch": "^3.0.3",
-    "@types/mocha": "^7.0.2",
     "@typescript-eslint/eslint-plugin": "^2.16.0",
     "@typescript-eslint/parser": "^2.16.0",
     "cross-env": "^7.0.2",
